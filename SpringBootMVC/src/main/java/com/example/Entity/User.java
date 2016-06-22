@@ -18,7 +18,6 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1l;
-    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -103,7 +102,7 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = passwordEncoder.encode(password);
+        this.password = password;
     }
 
     public Boolean getExpired() {

@@ -12,6 +12,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +38,7 @@ import java.util.concurrent.Future;
 @RestController
 public class HelloController {
     private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
     private  Person person;
@@ -79,7 +83,7 @@ public class HelloController {
 
     @RequestMapping("logout")
     public String logout() {
-        return "logout";
+        return "logout1";
     }
 
     @RequestMapping("/efg")
@@ -91,7 +95,9 @@ public class HelloController {
             //,headers = {"Content-type=application/json"}
     )
     public ResponseEntity<User> getUser(@PathVariable String name) throws Exception{
+        //Another way to get the request
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        log.info("Principal is:  " + request.getUserPrincipal().getName());
 
         List<User> users = userRepository.findByName(name);
         users = userRepository.findByName1(name);
@@ -104,22 +110,70 @@ public class HelloController {
         if(!users.isEmpty()){
             user = users.get(0);
         }
-        return ResponseEntity.ok().body(user);
+        log.info("User is:  " + user);
+        CsrfToken token = generateCsrfToken(request);
+        //Use this style, to add the real csrf token to the response header
+        //Even spring mvc has a csrf protection, it will not add the csrf field in a custom response.
+        //The token will be kept in a session, if the server is restarted, the token is expired.
+        return ResponseEntity.ok().header("X-CSRF-TOKEN",token.getToken()).body(user);
     }
 
     @RequestMapping(path = "/user", method = RequestMethod.POST
-            ,headers = {"Content-type=application/json"}
+            ,headers = {"Content-type=application/json"}//这个头可以说是必须的，不然json格式也无法序列化为对象。猜也猜不出。
     )
-    public ResponseEntity<User> addUser(//@Valid
+    //678 在加载后重新开一个窗体是可以用的管理员账号，但用旧的csrf token 就会出问题？
+    public ResponseEntity<User> addUser(@Valid//The valid annotation will not make new added user can not be read!
                                             @RequestBody User user, BindingResult result
             , HttpServletRequest request, HttpServletResponse response
     ) throws Exception{
         log.info("Auth type is:  " + request.getAuthType());
+        log.info("Principal is:  " + request.getUserPrincipal().getName());
         if(result.hasErrors()){
             return ResponseEntity.badRequest().body(null);
         }
-        user.setPassword(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        CsrfToken token = generateCsrfToken(request);
         return ResponseEntity.ok(userRepository.save(user));
     }
 
+    @RequestMapping(value="/csrf-token", method=RequestMethod.GET)
+    public @ResponseBody String getCsrfToken(HttpServletRequest request) {
+        CsrfToken token = generateCsrfToken(request);
+        return token.getToken();
+    }
+
+    @RequestMapping("/csrf")
+    public CsrfToken csrf(CsrfToken token) {
+        return token;
+    }
+
+    private CsrfToken generateCsrfToken(HttpServletRequest request) {
+        return (CsrfToken)request.getAttribute(CsrfToken.class.getName());
+    }
+
+
+    //Authorized endpoint
+
+    @RequestMapping("/role_assist")
+    public String role_assist() {
+        return "role_assist";
+    }
+
+
+    @RequestMapping("/admin")
+    public String admin() {
+        return "admin";
+    }
+
+
+    @RequestMapping("/user")
+    public String user() {
+        return "user";
+    }
+
+    @RequestMapping(path = "/logout", method = RequestMethod.POST
+    )
+    public String logout(HttpServletRequest request) throws Exception {
+        return "logout2";
+    }
 }

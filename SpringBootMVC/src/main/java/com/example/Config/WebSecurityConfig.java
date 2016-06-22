@@ -11,9 +11,13 @@ import org.springframework.security.config.annotation.authentication.configurers
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.sql.DataSource;
+import javax.ws.rs.HttpMethod;
+import java.util.ArrayList;
+import java.util.List;
 
 //The configuration can be fetched and be profiled
 //Without active profile specified, security config will be loaded anyway.
@@ -33,17 +37,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //Can use this to get datasource
         //DataSource dataSource = (DataSource) applicationContext.getBean("dataSource");
         //TODO: Only admin can post, and prevent csrf for posting
+        //csrf session can not be reused in different session
         http
+                .csrf().and()
+                //TODO: use different url to let different user access differen resource
                 .authorizeRequests()
+                .antMatchers("/").permitAll()
+                //If the role does not match, will redirect to error page directly
+                .antMatchers("/role_assist").hasAuthority("ASSIST")
+                //Don't use ROLE prefix here
+                .antMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN")
+                .antMatchers("/user").access("hasRole('ADMIN') or hasRole('USER') or hasRole('DBA')")//The is another api named regexMatchers.
+                //If the password is incorrect, the realm will prompt again
                 .anyRequest().fullyAuthenticated()
-                .and().httpBasic().and()
-        //TODO: logout fail. Why?
-//                .logout().logoutUrl("/logout").deleteCookies("JSESSIONID")
-// .logoutSuccessUrl("/")//If we let the / be logoutSuccessUrl, this page do not need to authenticate and authorized.
-//                .permitAll().and()
-                //TODO: how to do the csrf in post
-                .csrf().disable()
-                ;
+                //httpBasic will not add Authorization header to the response
+                .and().httpBasic();
+
+        http.headers().frameOptions().sameOrigin().httpStrictTransportSecurity();
+        //默认的logout，一登出就会报type not found 的404错误
+        http.logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")//使用这个url，返回的结果都不需要重定向，而是直接调用那个endpoint
+                //.logoutSuccessHandler(logoutSuccessHandler)
+                .invalidateHttpSession(true)
+                //.addLogoutHandler(logoutHandler)
+                .deleteCookies("JSESSIONID");
 
     }
 
@@ -59,20 +77,37 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.groupSearchBase("ou=groups")
                 .contextSource().ldif("classpath:test-server.ldif");
         //In memory authentication
+        List<SimpleGrantedAuthority> authList = new ArrayList<>();
+        //Don't use ROLE prefix here
+        authList.add(new SimpleGrantedAuthority("ASSIST"));
         auth.inMemoryAuthentication()
                 .withUser("user")
                 .password("user")
+                //Don't use ROLE prefix here
                 .roles("USER")
+                .and()
+                .withUser("assist")
+                .password("assist")
+                //Don't use ROLE prefix here
+                .authorities(authList)//The authorities conflicts roles, if authorities is activated,roles will take no effect
                 .and()
                 .withUser("admin")
                 .password("admin")
-                .roles("ADMIN", "USER");
+                //Don't use ROLE prefix here
+                .roles("USER", "ADMIN")
+                .and()
+                .withUser("dba")
+                .password("dba")
+                //Don't use ROLE prefix here
+                .roles("DBA");
+
 
         //Another approach: http://www.mkyong.com/spring-security/spring-security-form-login-using-database/
         //This approach: http://www.mkyong.com/spring-security/spring-security-hibernate-annotation-example/
         //All we need to do is to load the user from database, to use this service to create UserDetails
         //I guess the encode will encode the password and try to match the encoded password in the database;
-        auth.userDetailsService(customUserDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(new BCryptPasswordEncoder())
+        ;
 //How to use the datasource?
 //            //DataSource authentication
 //        auth

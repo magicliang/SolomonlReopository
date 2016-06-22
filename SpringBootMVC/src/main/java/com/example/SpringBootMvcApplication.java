@@ -12,6 +12,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 //@RestController
@@ -29,6 +31,7 @@ public class SpringBootMvcApplication {
 
     @Autowired
     private Environment env;
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
 
@@ -46,10 +49,10 @@ public class SpringBootMvcApplication {
         return (args) -> {
             userRepository.deleteInBatch(userRepository.findAll());
             //userRepository.findByName()
-            //password: Encrypted 123
-            userRepository.save(new User("Chuan", "$2a$10$W7fimbsfYVHG.nS5ZhqtfeyIftVRfNGeVpsj2RvW.1B8JgKHeClDO"));
-            userRepository.save(new User("Liang", "$2a$10$W7fimbsfYVHG.nS5ZhqtfeyIftVRfNGeVpsj2RvW.1B8JgKHeClDO"));
-            userRepository.save(new User("Test", "$2a$10$W7fimbsfYVHG.nS5ZhqtfeyIftVRfNGeVpsj2RvW.1B8JgKHeClDO"));
+            //password: Encrypted 123 $2a$10$W7fimbsfYVHG.nS5ZhqtfeyIftVRfNGeVpsj2RvW.1B8JgKHeClDO
+            userRepository.save(new User("Chuan", passwordEncoder.encode("123")));
+            userRepository.save(new User("Liang", passwordEncoder.encode("123")));
+            userRepository.save(new User("Test", passwordEncoder.encode("123")));
             // fetch all customers
             log.info("Users found with findAll():");
             log.info("-------------------------------");

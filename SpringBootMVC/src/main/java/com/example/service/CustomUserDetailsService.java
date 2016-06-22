@@ -1,7 +1,10 @@
 package com.example.service;
 
 import com.example.Entity.User;
+import com.example.SpringBootMvcApplication;
 import com.example.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,21 +26,24 @@ import java.util.List;
 /**
  * Created by magicliang on 2016/6/11.
  */
-//@Component
+@Component
 //Can also refer to this:
 //http://javapointers.com/tutorial/spring-custom-userdetailsservice-example/
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     @Resource
     private UserRepository uerRepository;
+    private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
 
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Authentication authentication = SecurityContextHolder.getContext()
-                .getAuthentication();
-        authentication.getPrincipal();
+        //This will break the database looking
+//        Authentication authentication = SecurityContextHolder.getContext()
+//                .getAuthentication();
+//
+//        log.info("The request principal is: " +  authentication.getPrincipal());
         List<User> users = uerRepository.findByName(username);
         //TODO: use optional to refactor here.
         if(users == null || users.isEmpty()) {
@@ -57,9 +64,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         //so that he can view pages that are ROLE_ADMIN specific
         if (role != null && role.trim().length() > 0) {
             if (role.equals("ADMIN")) {
-                authList.add(new SimpleGrantedAuthority("ADMIN"));
+                authList.add(new SimpleGrantedAuthority("Authority_ADMIN"));
             } else{
-                authList.add(new SimpleGrantedAuthority("USER"));
+                authList.add(new SimpleGrantedAuthority("Authority_USER"));
             }
         }
 
