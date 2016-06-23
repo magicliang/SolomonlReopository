@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //默认的logout，一登出就会报type not found 的404错误
         http.logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/")//使用这个url，返回的结果都不需要重定向，而是直接调用那个endpoint
+                .logoutSuccessUrl("/abc")//使用这个url，返回的结果都不需要重定向，而是直接调用那个endpoint
                 //.logoutSuccessHandler(logoutSuccessHandler)
                 .invalidateHttpSession(true)
                 //.addLogoutHandler(logoutHandler)
