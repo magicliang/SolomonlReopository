@@ -116,6 +116,8 @@ public class HelloController {
         //Even spring mvc has a csrf protection, it will not add the csrf field in a custom response.
         //The token will be kept in a session, if the server is restarted, the token is expired.
         return ResponseEntity.ok().header("X-CSRF-TOKEN",token.getToken()).body(user);
+        //return ResponseEntity.ok().body(user);
+
     }
 
     @RequestMapping(path = "/user", method = RequestMethod.POST

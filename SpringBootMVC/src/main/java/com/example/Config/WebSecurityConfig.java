@@ -36,11 +36,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //Can use this to get datasource
         //DataSource dataSource = (DataSource) applicationContext.getBean("dataSource");
-        //TODO: Only admin can post, and prevent csrf for posting
         //csrf session can not be reused in different session
         http
-                .csrf().and()
-                //TODO: use different url to let different user access differen resource
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 //If the role does not match, will redirect to error page directly
@@ -48,6 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //Don't use ROLE prefix here
                 .antMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN")
                 .antMatchers("/user").access("hasRole('ADMIN') or hasRole('USER') or hasRole('DBA')")//The is another api named regexMatchers.
+                .antMatchers("/upload").permitAll()
                 //If the password is incorrect, the realm will prompt again
                 .anyRequest().fullyAuthenticated()
                 //httpBasic will not add Authorization header to the response
@@ -62,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 //.addLogoutHandler(logoutHandler)
                 .deleteCookies("JSESSIONID");
+        //http.csrf().disable();
 
     }
 
