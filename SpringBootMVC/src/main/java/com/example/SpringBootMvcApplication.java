@@ -16,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+
 //@RestController
 //@EnableAutoConfiguration
 
@@ -28,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 //@PropertySource(value = { "classpath:application.properties" })//Also don't need this
 public class SpringBootMvcApplication {
 
+    public static String ROOT = "upload-dir";
 
     @Autowired
     private Environment env;
@@ -47,6 +50,8 @@ public class SpringBootMvcApplication {
     @Bean
     public CommandLineRunner demo(UserRepository userRepository) {
         return (args) -> {
+            new File(ROOT).mkdir();
+
             userRepository.deleteInBatch(userRepository.findAll());
             //userRepository.findByName()
             //password: Encrypted 123 $2a$10$W7fimbsfYVHG.nS5ZhqtfeyIftVRfNGeVpsj2RvW.1B8JgKHeClDO
@@ -56,9 +61,7 @@ public class SpringBootMvcApplication {
             // fetch all customers
             log.info("Users found with findAll():");
             log.info("-------------------------------");
-            userRepository.findAll().stream().parallel().forEach((user)->{
-                log.info(user.toString());
-            });
+            userRepository.findAll().stream().parallel().forEach((user)-> log.info(user.toString()));
         };
     }
 //In the spring example, we don't need this
