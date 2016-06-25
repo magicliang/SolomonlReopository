@@ -25,7 +25,7 @@ public class CountingSemaphore {
                 try {
                     countingSemaphore.take();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
                 }
             });
         }
@@ -35,7 +35,7 @@ public class CountingSemaphore {
                 try {
                     countingSemaphore.release();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
                 }
             });
         }

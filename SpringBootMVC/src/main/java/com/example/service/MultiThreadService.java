@@ -48,7 +48,7 @@ public class MultiThreadService {
             try {
                 Thread.sleep(2000L);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
             //Use abc instead
             return "ABC";
@@ -68,7 +68,7 @@ public class MultiThreadService {
         try {
             log.info("The download value is: " + downloading.get());
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }

@@ -100,6 +100,7 @@ Bounded queues. A bounded queue (for example, an ArrayBlockingQueue) helps preve
 
         synchronized public boolean stopThread() {
             this.stopped = true;
+            //在runnable内部找currentthread interrupt，在thread里对thisinterrupt
             this.interrupt();
             return this.stopped;
         }
