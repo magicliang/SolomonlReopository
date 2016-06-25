@@ -33,7 +33,7 @@ import java.util.List;
 public class CustomUserDetailsService implements UserDetailsService {
     @Resource
     private UserRepository uerRepository;
-    private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
 
 

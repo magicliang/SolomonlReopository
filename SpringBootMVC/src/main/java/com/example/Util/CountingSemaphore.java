@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 public class CountingSemaphore {
     private int bound = 0;
     private int signals = 0;
-    private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(CountingSemaphore.class);
 
     public static void main(String[] args) throws InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(5);

@@ -17,7 +17,7 @@ import java.util.Date;
 @Profile("dev")
 @Component
 public class OutputTimeService {
-    private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(OutputTimeService.class);
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     @Scheduled(fixedRate = 5000)

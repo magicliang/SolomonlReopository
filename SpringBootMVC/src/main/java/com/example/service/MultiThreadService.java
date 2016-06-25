@@ -19,7 +19,7 @@ import java.util.concurrent.*;
  */
 @Service
 public class MultiThreadService {
-    private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(MultiThreadService.class);
 
     MultiThreadService() {
     }

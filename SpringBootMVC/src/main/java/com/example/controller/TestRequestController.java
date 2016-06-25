@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/testRequest")
 public class TestRequestController {
-    private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(TestRequestController.class);
     @RequestMapping("/displayHeader")
     public void displayHeader(@RequestHeader("Accept-Encoding") String encoding){
         log.info("The is: Accept-Encoding" + encoding );

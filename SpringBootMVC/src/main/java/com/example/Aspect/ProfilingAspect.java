@@ -16,7 +16,7 @@ import org.springframework.util.StopWatch;
 @Aspect
 @Component
 public class ProfilingAspect {
-    private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(ProfilingAspect.class);
 
     @Around("methodsToBeProfiled()")
     public Object profile(ProceedingJoinPoint pjp) throws Throwable{

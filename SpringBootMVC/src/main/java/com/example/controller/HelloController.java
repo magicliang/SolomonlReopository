@@ -37,7 +37,7 @@ import java.util.concurrent.Future;
  */
 @RestController
 public class HelloController {
-    private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(HelloController.class);
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 

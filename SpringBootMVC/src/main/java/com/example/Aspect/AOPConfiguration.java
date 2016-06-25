@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class AOPConfiguration {
-    private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(AOPConfiguration.class);
 
     public AOPConfiguration(){
         log.info("AOP beginning!!!!!!!!!!!!!!!!!!!!!!!");
