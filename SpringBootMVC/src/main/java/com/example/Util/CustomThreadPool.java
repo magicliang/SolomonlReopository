@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -21,8 +21,8 @@ public class CustomThreadPool {
     private boolean isStopped;
 
     public static void main(String[] args) throws InterruptedException {
-        CustomThreadPool pool = new CustomThreadPool(5, 5);
-        for (int i = 0; i < 5; i++) {
+        CustomThreadPool pool = new CustomThreadPool(2, 2);
+        for (int i = 0; i < 2; i++) {
             pool.execute(() -> {
                 log.info("current thread is: " + Thread.currentThread());
                 try {
@@ -32,20 +32,28 @@ public class CustomThreadPool {
                 }
             });
         }
-        Thread.sleep(5000L);
+        Thread.sleep(20000L);
         pool.stop();
     }
 
     public CustomThreadPool() {
-
+        super();
     }
 
-    public CustomThreadPool(BlockingDeque<Runnable> taskQueue, List<PooledThread> threads) {
+    public CustomThreadPool(BlockingQueue<Runnable> taskQueue, List<PooledThread> threads) {
+        this();
         this.taskQueue = taskQueue;
         this.threads = threads;
     }
 
     public CustomThreadPool(int taskCount, int threadCount) {
+        /*
+        * There are three general strategies for queuing:
+Direct handoffs. A good default choice for a work queue is a SynchronousQueue that hands off tasks to threads without otherwise holding them. Here, an attempt to queue a task will fail if no threads are immediately available to run it, so a new thread will be constructed. This policy avoids lockups when handling sets of requests that might have internal dependencies. Direct handoffs generally require unbounded maximumPoolSizes to avoid rejection of new submitted tasks. This in turn admits the possibility of unbounded thread growth when commands continue to arrive on average faster than they can be processed.
+Unbounded queues. Using an unbounded queue (for example a LinkedBlockingQueue without a predefined capacity) will cause new tasks to wait in the queue when all corePoolSize threads are busy. Thus, no more than corePoolSize threads will ever be created. (And the value of the maximumPoolSize therefore doesn't have any effect.) This may be appropriate when each task is completely independent of others, so tasks cannot affect each others execution; for example, in a web page server. While this style of queuing can be useful in smoothing out transient bursts of requests, it admits the possibility of unbounded work queue growth when commands continue to arrive on average faster than they can be processed.
+Bounded queues. A bounded queue (for example, an ArrayBlockingQueue) helps prevent resource exhaustion when used with finite maximumPoolSizes, but can be more difficult to tune and control. Queue sizes and maximum pool sizes may be traded off for each other: Using large queues and small pools minimizes CPU usage, OS resources, and context-switching overhead, but can lead to artificially low throughput. If tasks frequently block (for example if they are I/O bound), a system may be able to schedule time for more threads than you otherwise allow. Use of small queues generally requires larger pool sizes, which keeps CPUs busier but may encounter unacceptable scheduling overhead, which also decreases throughput.
+        * */
+        //this.taskQueue = new LinkedBlockingDeque<>(taskCount);
         this.taskQueue = new LinkedBlockingQueue<>(taskCount);
         this.threads = new ArrayList<>(threadCount);
         for (int i = 0; i < threadCount; i++) {
@@ -71,7 +79,9 @@ public class CustomThreadPool {
         isStopped = true;
         threads.forEach((s) -> {
             s.stopThread();
-            s.stop();
+            //即使走到这一步，线程可能还没有结束，要等它退出循环和弹栈后，才算结束
+            log.info("This thread is:" + s.getName() + " ,getState:" + s.getState() + ", isAlive:  " + s.isAlive());
+            //s.stop();//This method is deprecated and will cause exception in LinkedBlockingDeque and  LinkedBlockingQueue
         });
         log.info("Thread pool stopped");
     }
@@ -104,7 +114,6 @@ public class CustomThreadPool {
             //From outside, also need to interrupt the current thread
             while (!stopped) {
                 try {
-
                     //Because here is blocking operation, we have to catch InterruptedException here.
                     //Use closure variable
                     //让线程内部自己通过消息队列通信
@@ -116,8 +125,10 @@ public class CustomThreadPool {
                     log.info("task finished");
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
+                    //Don't break here, only the stop flag can stop the worker thread. The interrupt will break the waiting.
                 }
             }
+            log.info("thread is closing");
         }
     }
 }
