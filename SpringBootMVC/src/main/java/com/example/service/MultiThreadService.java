@@ -95,8 +95,6 @@ public class MultiThreadService {
         });
         //它可以期待一个返回值是completableFuture，类似promise里接promise
         downloading.thenCompose(this::strLen);
-
-
     }
 
     private CompletableFuture<Integer> strLen(String s) {
