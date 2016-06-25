@@ -55,14 +55,15 @@ public class HelloController {
         return this.person;
     }
 
-    @Inject
-    private void injectOtherPersons(Person p1, Person p2, Map<String, Person> pc, ApplicationContext applicationContext){
-
-        log.info("1st person's name is:  " + p1.getName());
-        log.info("2nd person's name is:  " + p2.getName());
-        log.info("person collection is:  " + pc.size());
-        log.info("applicationContext  is:  " + applicationContext);
-    }
+    //Since the error inspection see errors here, comment it. It can work anyway
+//    @Autowired
+//    private void injectOtherPersons(Person p1, Person p2, Map<String, Person> pc, ApplicationContext applicationContext){
+//
+//        log.info("1st person's name is:  " + p1.getName());
+//        log.info("2nd person's name is:  " + p2.getName());
+//        log.info("person collection is:  " + pc.size());
+//        log.info("applicationContext  is:  " + applicationContext);
+//    }
 
     @Autowired//This annotation can be used to most types, better than resource and inject
     public HelloController(Person person){
@@ -86,6 +87,7 @@ public class HelloController {
         return "logout1";
     }
 
+    @CrossOrigin(origins = "http://localhost:9000")
     @RequestMapping("/efg")
     public String efg() {
         return "efg";

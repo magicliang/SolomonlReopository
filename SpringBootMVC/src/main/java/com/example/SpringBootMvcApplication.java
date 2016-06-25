@@ -2,6 +2,7 @@ package com.example;
 
 import com.example.Entity.User;
 import com.example.repository.UserRepository;
+import com.example.service.MultiThreadService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,10 @@ public class SpringBootMvcApplication {
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    MultiThreadService multiThreadService;
+
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
