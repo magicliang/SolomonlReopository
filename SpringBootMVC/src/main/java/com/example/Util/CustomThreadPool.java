@@ -60,7 +60,11 @@ Bounded queues. A bounded queue (for example, an ArrayBlockingQueue) helps preve
             //threads.add(new PooledThread(taskQueue));
             threads.add(new PooledThread());
         }
-        threads.forEach((t) -> t.start());
+        final int[] i = new int[]{0};
+        threads.forEach((t) -> {
+            t.start();
+            t.setName("CustomThreadPool-WorkerThread" + i[0]++);
+        });
         log.info("Thread pool started");
     }
 
