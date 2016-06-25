@@ -33,7 +33,6 @@ public class ExchangerTest {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-
         });
     }
 
