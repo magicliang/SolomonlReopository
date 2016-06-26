@@ -13,8 +13,6 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class CustomThreadPool {
     private static final Logger log = LoggerFactory.getLogger(CustomThreadPool.class);
-
-
     private BlockingQueue<Runnable> taskQueue;
     private List<PooledThread> threads;
     private boolean isStopped;
@@ -60,7 +58,8 @@ Bounded queues. A bounded queue (for example, an ArrayBlockingQueue) helps preve
             threads.add(new PooledThread());
         }
         final int[] i = new int[]{0};
-        threads.forEach((t) -> {
+        //多线程启动多线程
+        threads.stream().parallel().forEach((t) -> {
             t.start();
             t.setName("CustomThreadPool-WorkerThread" + i[0]++);
         });
@@ -127,6 +126,8 @@ Bounded queues. A bounded queue (for example, an ArrayBlockingQueue) helps preve
                     //It will be blocked
                     Runnable runnable = taskQueue.take();
                     log.info("fetch a task to run");
+                    //从这一点上看， Runnable 比 Thread 有一个额外的优势，就是它可以被复用
+                    //一个Thread就是一个线程，但它可以切换多个runnable。
                     runnable.run();
                     log.info("task finished");
                 } catch (InterruptedException e) {
