@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -33,7 +32,7 @@ public class CustomThreadPool {
             });
         }
         Thread.sleep(20000L);
-        pool.stop();
+        pool.stop();//不关闭线程池， JVM 无法关闭
     }
 
     public CustomThreadPool() {
@@ -79,6 +78,8 @@ Bounded queues. A bounded queue (for example, an ArrayBlockingQueue) helps preve
         }
     }
 
+    //这实际上是shutdownnow，不是shutdown，shutdown会等，而shutdown now会interrupt
+    //还需要实现awaitTermination
     public synchronized void stop() {
         isStopped = true;
         threads.forEach((s) -> {
