@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 join 是一对一的协同
 countdownlatch是多对一的协同
 cyclicbarrier是加强型的countdownlatch
+wait是基础的，最自由的协同
 * */
 
 /**
