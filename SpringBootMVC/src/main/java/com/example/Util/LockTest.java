@@ -14,6 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class LockTest {
     private static final Logger log = LoggerFactory.getLogger(LockTest.class);
     private static final ExecutorService executor = Executors.newFixedThreadPool(2);
+    //Reentrantlock是共有的，Condition也是
     private static final ReentrantLock lock1 = new ReentrantLock();
     private static final Condition condition1 = lock1.newCondition();
     private static volatile int num1 = 0;
