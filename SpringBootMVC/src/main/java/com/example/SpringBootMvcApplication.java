@@ -11,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,22 +27,20 @@ import java.io.File;
 @SpringBootApplication
 @EnableCaching
 @EnableScheduling
+@Order(-1)
+//@Import(WebConfig.class)//don't have to use this, the configuration annotaion will be autowired
 //@EnableAspectJAutoProxy//With @SpringBootApplicationm, we do not need this, only need @Aspect and @Component
 //With this, we can specify properties not in resources folder
 //@PropertySource(value = { "classpath:application.properties" })//Also don't need this
 public class SpringBootMvcApplication {
 
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
     public static String ROOT = "upload-dir";
-
-    @Autowired
-    private Environment env;
-
     @Autowired
     MultiThreadService multiThreadService;
-
-    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-    private static final Logger log = LoggerFactory.getLogger(SpringBootMvcApplication.class);
+    @Autowired
+    private Environment env;
 
     //@RequestMapping("/")
     //String home(){

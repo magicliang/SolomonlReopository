@@ -2,40 +2,62 @@ package com.example.controller;
 
 import com.example.Entity.Person;
 import com.example.Entity.User;
-import com.example.SpringBootMvcApplication;
 import com.example.repository.UserRepository;
 import com.example.repository.impl.AnotherUserRepostitory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Future;
 
+
+/*
+* Advising controllers with @ControllerAdvice and @RestControllerAdvice
+
+The @ControllerAdvice annotation is a component annotation allowing implementation classes to be auto-detected through classpath scanning. It is automatically enabled when using the MVC namespace or the MVC Java config.
+
+Classes annotated with @ControllerAdvice can contain @ExceptionHandler, @InitBinder, and @ModelAttribute annotated methods, and these methods will apply to @RequestMapping methods across all controller hierarchies as opposed to the controller hierarchy within which they are declared.
+
+@RestControllerAdvice is an alternative where @ExceptionHandler methods assume @ResponseBody semantics by default.
+
+Both @ControllerAdvice and @RestControllerAdvice can target a subset of controllers:
+
+// Target all Controllers annotated with @RestController
+@ControllerAdvice(annotations = RestController.class)
+public class AnnotationAdvice {}
+
+// Target all Controllers within specific packages
+@ControllerAdvice("org.example.controllers")
+public class BasePackageAdvice {}
+
+// Target all Controllers assignable to specific classes
+@ControllerAdvice(assignableTypes = {ControllerInterface.class, AbstractController.class})
+public class AssignableTypesAdvice {}
+Check out the @ControllerAdvice documentation for more details.
+* */
 /**
  * Created by magicliang on 2016/2/25.
  */
 @RestController
+@RequestMapping("/res/v1")
+@ControllerAdvice//这个一个注解使得内部的配置会应用到所有的controller上，所以我们用一个basiccontroller最好了
 public class HelloController {
     private static final Logger log = LoggerFactory.getLogger(HelloController.class);
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -50,9 +72,20 @@ public class HelloController {
 
     }
 
-    @Bean//A bean factory method
-    Person getPerson(){
-        return this.person;
+    @Autowired//This annotation can be used to most types, better than resource and inject
+    public HelloController(Person person) {
+        this.person = person;
+        log.info("The person's name is: " + person.getName());
+    }
+
+    //从文档上看，就是把命令行参数和请求参数绑定到方法参数时的加工器
+    //感觉就是个controller里的converter
+    //见这里 http://www.bkjia.com/Javabc/1101887.html
+    //和这里 http://www.cnblogs.com/HD/p/4123686.html
+    //这个注解要配合@ControllerAdvice一起用才好，见上面的注解
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
     //Since the error inspection see errors here, comment it. It can work anyway
@@ -65,11 +98,12 @@ public class HelloController {
 //        log.info("applicationContext  is:  " + applicationContext);
 //    }
 
-    @Autowired//This annotation can be used to most types, better than resource and inject
-    public HelloController(Person person){
-        this.person = person;
-        log.info("The person's name is: " + person.getName());
+    @Bean
+//A bean factory method
+    Person getPerson() {
+        return this.person;
     }
+
     @RequestMapping("/abc")
     public String abc() {
         return "abc";
