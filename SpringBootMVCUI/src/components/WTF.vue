@@ -17,11 +17,9 @@
     data () {
       return {
         msg: 'WTF',
-        number: (() = > {return 123}
-    )
-      ()
-    }
-    };,
+        number: (() => { return 123 })()
+      }
+    },
     components: {
       // 不需要这些
       // 'other-component':OtherComponent,
