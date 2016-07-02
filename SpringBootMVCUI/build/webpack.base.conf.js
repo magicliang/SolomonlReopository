@@ -29,6 +29,7 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'eslint',
+        //loader: "eslint-loader?{rules:{semi:['error', 'always']}}",
         include: projectRoot,
         exclude: /node_modules/
       },

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <img class="logo" src="./assets/logo.png">
+    <!--自定义的组件就可以拿来当标签用-->
     <hello></hello>
     <p>
       Welcome to your Vue.js app!

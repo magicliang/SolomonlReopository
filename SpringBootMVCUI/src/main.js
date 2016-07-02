@@ -5,4 +5,5 @@ import App from './App'
 new Vue({
   el: 'body',
   components: {App}
-});
+
+})// ES Lint 不鼓励使用分号 ;

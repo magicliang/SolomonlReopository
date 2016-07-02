@@ -11,6 +11,7 @@ module.exports = {
   ],
   // add your custom rules here
   'rules': {
+    //'spaced-comment': ["error", "never"],
     // allow paren-less arrow functions
     'arrow-parens': 0,
     // allow debugger during development

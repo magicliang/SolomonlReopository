@@ -1,10 +1,12 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <wtf></wtf>
   </div>
 </template>
 
 <script>
+  import WTFComponent from './WTF.vue'
   export default {
     data () {
       return {
@@ -14,6 +16,10 @@
         // its initial state.
         msg: 'Hello World!'
       }
+    },
+    components: {
+      // 驼峰命名法的组件会自动被转化成 W3C 命名法，即全小写字母加下划线的语法
+      'wtf': WTFComponent
     }
   }
 </script>
