@@ -57,7 +57,7 @@ Check out the @ControllerAdvice documentation for more details.
  */
 @RestController
 @RequestMapping("/res/v1")
-@ControllerAdvice//这个一个注解使得内部的配置会应用到所有的controller上，所以我们用一个basiccontroller最好了
+//@ControllerAdvice//这个一个注解使得内部的配置会应用到所有的controller上，所以我们用一个basiccontroller最好了
 public class HelloController {
     private static final Logger log = LoggerFactory.getLogger(HelloController.class);
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -109,10 +109,10 @@ public class HelloController {
         return "abc";
     }
 
-    @RequestMapping("/")
-    public String index() {
-        return "index";
-    }
+//    @RequestMapping("/")
+//    public String index() {
+//        return "index";
+//    }
 
 
 
