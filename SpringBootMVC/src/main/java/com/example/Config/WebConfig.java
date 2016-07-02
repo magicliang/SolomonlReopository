@@ -39,14 +39,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         return jackson2HttpMessageConverter;
     }
-
+    //必须配上maven的dependency才行。不然即使在ide里看得到，工程里也看不到。
+    //明明应该被集成进spring里了才对
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setDefaultEncoding(StandardCharsets.UTF_8.name());
         // 指定所上传文件的总大小不能超过100M
         // 注意maxUploadSize属性的限制不是针对单个文件, 而是所有文件的容量之和
-        //multipartResolver.setMaxUploadSize(104857600);
+        multipartResolver.setMaxUploadSize(104857600);
         multipartResolver.setMaxInMemorySize(4096);
 
         return multipartResolver;
