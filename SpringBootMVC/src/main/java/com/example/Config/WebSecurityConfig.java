@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //If the password is incorrect, the realm will prompt again
                 .anyRequest().fullyAuthenticated()
                 //httpBasic will not add Authorization header to the response
-                .and().httpBasic().realmName("yulebaike");
+                .and().httpBasic().realmName("yulebaike");//不支持中文！
 
         http.headers().frameOptions().sameOrigin().httpStrictTransportSecurity();
         //默认的logout，一登出就会报type not found 的404错误
