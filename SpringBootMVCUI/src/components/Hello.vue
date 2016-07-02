@@ -1,7 +1,8 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <wtf message="this is a message"></wtf>
+    <!--可以使用 @wtf-msg="antohernotify" 来用方法响应而不是使用events-->
+    <wtf @wtf-msg="antohernotify"  message="this is a message"></wtf>
   </div>
 </template>
 
@@ -20,7 +21,23 @@
     components: {
       // 驼峰命名法的组件会自动被转化成 W3C 命名法，即全小写字母加下划线的语法
       'wtf': WTFComponent
+    },
+    // 在创建实例时 `events` 选项简单地调用 `$on`
+    // 用events来响应事件
+    // 空 message不会被响应
+    events: {
+      'wtf-msg': function (msg) {
+        // 事件回调内的 `this` 自动绑定到注册它的实例上
+        console.log('wtf-message: ' + msg)
+      }
+    },
+    // 与events矛盾，有它就不会events响应
+    methods: {
+      antohernotify: function () {
+        console.log('another notify! ')
+      }
     }
+
   }
 </script>
 
