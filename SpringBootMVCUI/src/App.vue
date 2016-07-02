@@ -1,6 +1,9 @@
 <template>
   <div id="app">
+    <!--src下使用使用相对路径./开头-->
     <img class="logo" src="./assets/logo.png">
+    <!--static 文件夹就要用这种绝对路径-->
+    <!--<img class="logo123" src="/static/logo123.png">-->
     <!--自定义的组件就可以拿来当标签用-->
     <hello></hello>
     <p>

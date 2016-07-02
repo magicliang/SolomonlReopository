@@ -5,7 +5,7 @@
     <div>{{number}}</div>
   </div>
 </template>
-<style scoped>
+<style lang="css" scoped>
   /*这是一个css注释的例子*/
   /*body{*/
   /*background-color:#ff0000;*/
