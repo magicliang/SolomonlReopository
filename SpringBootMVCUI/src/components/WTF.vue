@@ -1,6 +1,15 @@
 <template id="wtf-template">
   <div>
     <div>{{msg}}</div>
+    <slot name="one">
+      slot1
+    </slot>
+    <slot name="two">
+      slot2
+    </slot>
+    <slot>
+      如果没有分发内容则显示我。这里有点类似ember里的yield，但ember的yield没有默认的placeholder。
+    </slot>
     <div>{{number}}</div>
     <div>{{message}}</div>
     <br>
@@ -56,6 +65,7 @@
     components: {
       // 不需要这些
       'other-component': {
+        name: 'other-component',
         props: ['efg'],
         // 一个vue文件里，只能有一个template标签
         template: '<div>一个匿名的，局部的component!</div>' +

@@ -2,7 +2,15 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <!--可以使用 @wtf-msg="antohernotify" 来用方法响应而不是使用events-->
-    <wtf @wtf-msg="antohernotify"  message="this is a message"></wtf>
+    <wtf @wtf-msg="antohernotify"  message="this is a message">
+      <p slot="one">Hello.vue给予WTF.vue的内容1</p>
+      <p slot="two">Hello.vue给予WTF.vue的内容2</p>
+    </wtf>
+    <br>
+    组件在 currentComponent 变化时改变
+    <component :is="currentComponent" keep-alive>
+      <!-- 非活动组件将被缓存 -->
+    </component>
   </div>
 </template>
 
@@ -15,7 +23,8 @@
         // with hot-reload because the reloaded component
         // preserves its current state and we are modifying
         // its initial state.
-        msg: 'Hello World!'
+        msg: 'Hello World!',
+        currentComponent: 'wtf'
       }
     },
     components: {
