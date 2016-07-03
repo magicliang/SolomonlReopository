@@ -42,7 +42,7 @@
     },
     // 与events矛盾，有它就不会events响应
     methods: {
-      //这里也可以接受参数
+      // 这里也可以接受参数
       antohernotify: function (msg1, msg2) {
         console.log('another notify:' + msg1 + ' and ' + msg2)
       }

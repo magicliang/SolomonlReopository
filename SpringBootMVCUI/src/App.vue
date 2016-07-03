@@ -1,3 +1,4 @@
+<!--这种vue格式，真的只有webpack或者Browserify这样的转换器可以使用-->
 <template>
   <div id="app">
     <!--src下使用使用相对路径./开头-->
