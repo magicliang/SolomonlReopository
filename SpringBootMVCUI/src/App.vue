@@ -13,9 +13,7 @@
       <a v-link="{ path: '/foo' }">Go to Foo</a>
       <a v-link="{ path: '/bar' }">Go to Bar</a>
     </p>
-    <!-- 路由外链 -->
-
-    这里相当于ember的outlet
+    <!-- 路由外链 这里相当于ember的outlet -->
     <router-view></router-view>
   </div>
 </template>
