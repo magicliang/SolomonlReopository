@@ -1,4 +1,5 @@
 <template id="wtf-template">
+  最好还是提供一个根元素来做锚定，不然就成为fragment instance
   <div>
     <div>{{msg}}</div>
     <slot name="one">
@@ -79,7 +80,7 @@
       notify: function () {
         console.log('notify ')
         if (this.abc.trim()) {
-          this.$dispatch('wtf-msg', this.abc)
+          this.$dispatch('wtf-msg', this.abc, 'extra msg')
           this.abc = ''
         }
       }

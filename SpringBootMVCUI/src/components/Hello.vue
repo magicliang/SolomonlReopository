@@ -35,15 +35,16 @@
     // 用events来响应事件
     // 空 message不会被响应
     events: {
-      'wtf-msg': function (msg) {
-        // 事件回调内的 `this` 自动绑定到注册它的实例上
-        console.log('wtf-message: ' + msg)
-      }
+//      'wtf-msg': function (msg1, msg2) {
+//        // 事件回调内的 `this` 自动绑定到注册它的实例上
+//        console.log('wtf-message: ' + msg1 + ' and ' + msg2)
+//      }
     },
     // 与events矛盾，有它就不会events响应
     methods: {
-      antohernotify: function () {
-        console.log('another notify! ')
+      //这里也可以接受参数
+      antohernotify: function (msg1, msg2) {
+        console.log('another notify:' + msg1 + ' and ' + msg2)
       }
     }
 
