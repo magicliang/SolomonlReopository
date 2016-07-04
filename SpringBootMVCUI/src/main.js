@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Foo from './components/Foo'
 import Bar from './components/Bar'
+import XXX from './components/XXX'
 import App from './App'
 import VueRouter from 'vue-router'
 
@@ -23,6 +24,11 @@ router.map({
     component: Bar,
     // 这个值本身并不是查询参数，是route.query2，不是 route.params.query2
     query2: 2
+  },
+  '/xxx/:id': {
+    name: 'xxx',
+    component: XXX
+    // 这个值本身并不是查询参数，是route.query2，不是 route.params.query2
   }
   // 为了避免递归渲染，怎样映射app组件？不要映射，让主页和主component自动占据 http://localhost:8080/#!/，不要做重定向
   // '/': {

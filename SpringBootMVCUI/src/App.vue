@@ -12,6 +12,7 @@
       <!-- 使用指令 v-link 进行导航。注意，如果后面有动态段的话，也可能什么都没有显示出来吗，因为缺少动态段 -->
       <a v-link="{ path: '/foo' }">Go to Foo</a>
       <a v-link="{ path: '/bar' }">Go to Bar</a>
+      <a v-link="{ name: 'xxx', params: { id: 123 } }">Go to XXX</a>
     </p>
     <!-- 路由外链 这里相当于ember的outlet -->
     <router-view></router-view>
