@@ -35,7 +35,7 @@ router.map({
   //   component: App
   // }
 })
-
+//TODO: 使用一个规则，让所有错误的路由都重定向到主页上
 // router.redirect({
 //   '*': '/'
 // })
