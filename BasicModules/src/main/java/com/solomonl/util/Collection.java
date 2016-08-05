@@ -3,5 +3,7 @@ package com.solomonl.util;
 /**
  * Created by magicliang on 2016/8/2.
  */
-public interface Collection {
+//Let this to be iterable
+public interface Collection<T> extends Iterable<T>{
+
 }
