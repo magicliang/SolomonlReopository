@@ -5,37 +5,41 @@ package com.solomonl.util;
  */
 
 
+import java.util.Iterator;
+import java.util.function.Consumer;
+
 /**
  * TODO:
- *       1. add unit test for this class, for now we use main instead
- *       2. encapsulate this into a util class
- *       3. synchronized?
- *       4. 接口化？
- * */
+ * 1. add unit test for this class, for now we use main instead
+ * 2. encapsulate this into a util class
+ * 3. synchronized?
+ * 4. 接口化？
+ */
 
-public class LinkedList implements List{
-    private Node<String> head;
+public class LinkedList<T> implements List {
+
+    private Node<T> head;
 
     public LinkedList() {
         super();
-        head = new Node<String>("head");
+        head = new Node<>();
         head.setNextNode(head);
         head.setPreviousNode(head);
     }
 
-    public Node<String> getHead() {
+    public Node<T> getHead() {
         return head;
     }
 
-    public void addNodeAtHead(Node<String> node) {
-        Node<String> nextNode = head.getNextNode();
+    public void addNodeAtHead(Node<T> node) {
+        Node<T> nextNode = head.getNextNode();
         node.setNextNode(nextNode);
         nextNode.setPreviousNode(node);
         head.setNextNode(node);
     }
 
-    public void addNodeAtTail(Node<String> node) {
-        Node<String> tail = head.getPreviousNode();
+    public void addNodeAtTail(Node<T> node) {
+        Node<T> tail = head.getPreviousNode();
         node.setNextNode(head);
         head.setPreviousNode(node);
         tail.setNextNode(node);
@@ -45,9 +49,9 @@ public class LinkedList implements List{
 
     @Override
     public String toString() {
-        Node<String> node = head.getNextNode();
+        Node<T> node = head.getNextNode();
         StringBuilder sb = new StringBuilder("com.solomonl.util.LinkedList: \n" + head);
-        while(node != head){
+        while (node != head) {
             sb.append("\n => " + node);
             node = node.getNextNode();
         }
@@ -55,6 +59,32 @@ public class LinkedList implements List{
         return sb.toString();
     }
 
+    @Override
+    public Iterator iterator() {
+        return new MyIterator();
+    }
+
+    private class MyIterator implements Iterator{
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+
+        @Override
+        public Object next() {
+            return null;
+        }
+
+        @Override
+        public void remove() {
+
+        }
+
+        @Override
+        public void forEachRemaining(Consumer action) {
+
+        }
+    }
     public static void main(String[] args) {
         testCase1();
         testCase2();
@@ -65,16 +95,15 @@ public class LinkedList implements List{
         System.out.println("testCase1");
         LinkedList linkedList = new LinkedList();
         for (int i = 0; i < 10; i++) {
-            linkedList.addNodeAtTail(new Node<String>((new Integer(i)).toString()));
+            linkedList.addNodeAtTail(new Node<>((new Integer(i)).toString()));
         }
         System.out.println(linkedList);
     }
+
     private static void testCase2() {
         System.out.println("testCase2");
         LinkedList linkedList = new LinkedList();
-        for (int i = 10; i > 0; i--) {
-            linkedList.addNodeAtHead(new Node<String>((new Integer(i)).toString()));
-        }
+        for (int i = 10; i > 0; i--) linkedList.addNodeAtHead(new Node<>((new Integer(i)).toString()));
         System.out.println(linkedList);
     }
 

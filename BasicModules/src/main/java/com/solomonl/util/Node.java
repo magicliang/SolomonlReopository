@@ -7,30 +7,32 @@ package com.solomonl.util;
 // 泛型化
 class Node<T> {
     // 还是放在这里吧，在内存铺排的时候，这些field反正都是null了
-    private Node nextNode;
-    private Node previousNode;
+    private Node<T> nextNode;
+    private Node<T> previousNode;
     private T value;
 
-    public Node() {
+    Node() {
+        super();
     }
 
-    public Node(T value) {
+    Node(T value) {
+        this();
         this.value = value;
     }
 
-    public Node getNextNode() {
+    Node getNextNode() {
         return nextNode;
     }
 
-    public void setNextNode(Node nextNode) {
+    void setNextNode(Node<T> nextNode) {
         this.nextNode = nextNode;
     }
 
-    public Node getPreviousNode() {
+    Node<T> getPreviousNode() {
         return previousNode;
     }
 
-    public void setPreviousNode(Node previousNode) {
+    void setPreviousNode(Node<T> previousNode) {
         this.previousNode = previousNode;
     }
 
