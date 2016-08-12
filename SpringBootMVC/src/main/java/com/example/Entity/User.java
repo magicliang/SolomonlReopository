@@ -1,28 +1,24 @@
 package com.example.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * Created by magicliang on 2016/4/23.
  */
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1l;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(length = 20, nullable = false)
     private String name;
 
     private String password;
@@ -37,7 +33,7 @@ public class User implements Serializable {
 
     private String role;
 
-    public User(){
+    public User() {
         super();
     }
 
@@ -46,7 +42,7 @@ public class User implements Serializable {
     }
 
     public User(String name, String password) {
-        this(name,password, null, null, null, null, null);
+        this(name, password, null, null, null, null, null);
     }
 
     public User(String name, String password, Boolean isLocked, Boolean isExpired, Boolean isEnabled, String email, String role) {
