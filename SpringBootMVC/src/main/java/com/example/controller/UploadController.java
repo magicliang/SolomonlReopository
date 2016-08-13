@@ -23,10 +23,6 @@ public class UploadController {
                                    @RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
         if (name.contains("/")) {
-            redirectAttributes.addFlashAttribute("message", "Folder separators not allowed");
-            return "redirect:/";
-        }
-        if (name.contains("/")) {
             redirectAttributes.addFlashAttribute("message", "Relative pathnames not allowed");
             return "redirect:/";
         }
