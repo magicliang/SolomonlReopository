@@ -16,6 +16,8 @@ import java.io.FileOutputStream;
 /**
  * Created by magicliang on 2016/6/23.
  */
+// 获取文件还可以参考这个链接，用resource接口
+    //https://spring.io/guides/gs/uploading-files/
 @RestController
 public class UploadController {
     @RequestMapping(method = RequestMethod.POST, path = "/upload")
