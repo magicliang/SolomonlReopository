@@ -67,6 +67,7 @@
       // 不需要这些
       'other-component': {
         name: 'other-component',
+        // 只有props才能暴露出去给外部组件，也只有它可以用sync
         props: ['efg'],
         // 一个vue文件里，只能有一个template标签
         template: '<div>一个匿名的，局部的component!</div>' +

@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <!--可以使用 @wtf-msg="antohernotify" 来用方法响应而不是使用events-->
+    <!--可以使用 @wtf-msg="antohernotify" 来用方法响应而不是使用events @是v-on的简写-->
     <wtf @wtf-msg="antohernotify"  message="this is a message">
       <p slot="one">Hello.vue给予WTF.vue的内容1</p>
       <p slot="two">Hello.vue给予WTF.vue的内容2</p>
@@ -34,6 +34,7 @@
     // 在创建实例时 `events` 选项简单地调用 `$on`
     // 用events来响应事件
     // 空 message不会被响应
+    //除了用 events，还可以用 $on()
     events: {
 //      'wtf-msg': function (msg1, msg2) {
 //        // 事件回调内的 `this` 自动绑定到注册它的实例上
