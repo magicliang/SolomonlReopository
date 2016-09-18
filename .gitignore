@@ -75,3 +75,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+*.class
+*.class
+BasicModules/target/classes/com/solomonl/util/LinkedList$1.class
+*.class
