@@ -20,6 +20,8 @@
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 
+*/.idea/*
+
 # Gradle:
 .idea/gradle.xml
 .idea/libraries
@@ -79,3 +81,5 @@ $RECYCLE.BIN/
 *.class
 BasicModules/target/classes/com/solomonl/util/LinkedList$1.class
 *.class
+.idea/compiler.xml
+.idea/copyright/profiles_settings.xml
