@@ -12,6 +12,15 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 /**
  * Created by magicliang on 2016/9/18.
  */
+/*
+* 1 先制造BootStrap
+* 2 再选定一个boss，一个worker两个线程组
+* 3 对这个channel配置handler，所有的参数和处理逻辑都在handler里了
+* 4 阻塞本线程直到channel关闭
+* 5 关闭线程池
+* 6 退出本线程
+*
+* */
 public class BasicServer {
     private int port;
 
@@ -25,6 +34,7 @@ public class BasicServer {
     }
 
     public void run() throws Exception {
+        // 事件循环组就是线程池的组
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -49,6 +59,7 @@ public class BasicServer {
             ChannelFuture f = b.bind(port).sync();//绑定的服务器;sync 等待服务器关闭。也就是说sync到关闭之前都是阻塞的？
             f.channel().closeFuture().sync();//阻塞完了到这一步，channel才能关？
         } finally {
+            //这是两个线程池的重要证据
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
