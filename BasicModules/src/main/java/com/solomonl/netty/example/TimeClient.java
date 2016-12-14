@@ -12,6 +12,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 /**
  * Created by magicliang on 2016/9/18.
  */
+// 这里没有用bind，但可以用bind
 public class TimeClient {
     public static void main(String[] args) throws Exception {
         int port;
