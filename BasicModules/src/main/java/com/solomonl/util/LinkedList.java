@@ -26,7 +26,7 @@ public class LinkedList<T> implements List {
         head.setNextNode(head);
         head.setPreviousNode(head);
     }
-
+     
     public Node<T> getHead() {
         return head;
     }
@@ -103,7 +103,8 @@ public class LinkedList<T> implements List {
     private static void testCase2() {
         System.out.println("testCase2");
         LinkedList<String> linkedList = new LinkedList();
-        for (int i = 10; i > 0; i--) linkedList.addNodeAtHead(new Node<>((new Integer(i)).toString()));
+        for (int i = 10; i > 0; i--) linkedList.addNodeAtHead(new Node<>((new Integer(i))
+                .toString()));
         System.out.println(linkedList);
     }
 
