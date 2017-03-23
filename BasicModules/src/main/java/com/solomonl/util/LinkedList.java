@@ -93,7 +93,7 @@ public class LinkedList<T> implements List {
 
     private static void testCase1() {
         System.out.println("testCase1");
-        LinkedList linkedList = new LinkedList();
+        LinkedList<String> linkedList = new LinkedList();
         for (int i = 0; i < 10; i++) {
             linkedList.addNodeAtTail(new Node<>((new Integer(i)).toString()));
         }
@@ -102,14 +102,14 @@ public class LinkedList<T> implements List {
 
     private static void testCase2() {
         System.out.println("testCase2");
-        LinkedList linkedList = new LinkedList();
+        LinkedList<String> linkedList = new LinkedList();
         for (int i = 10; i > 0; i--) linkedList.addNodeAtHead(new Node<>((new Integer(i)).toString()));
         System.out.println(linkedList);
     }
 
     private static void testCase3() {
         System.out.println("testCase3");
-        LinkedList linkedList = new LinkedList();
+        LinkedList<String> linkedList = new LinkedList();
         System.out.println(linkedList);
     }
 }
