@@ -28,15 +28,17 @@ public class SingletonTest {
     }
     //Approach 2: use double check
     public static SingletonTest getSingletonByHungeryMan() {
-        if(instance == null){
+        SingletonTest result = instance;
+        if(result == null){
             //Must lock class
             synchronized (SingletonTest.class){
-                if(instance == null){
+                result = instance;
+                if(result == null){
                     System.out.println("Only initialize instance once");
-                    instance = new SingletonTest();
+                    result = instance = new SingletonTest();
                 }
             }
         }
-        return  instance;
+        return  result;
     }
 }
