@@ -41,7 +41,7 @@ class MyInvokationHandler implements InvocationHandler {
      * 在这里 proxy 是被动态代理生成的 proxy 对象。但如果我们用 ((Person) proxy).walk() 调用就会引起无限递归，因为这方法又会触发 InvocationHandler。也就是我们只能对它对属性取值了，纯粹成为一个摆设。
      * 这是一个 visitor 的模式吧。 proxy 和 invocation handler 可以相互嵌套访问。
      * 这里一个 invoke 方法代理了这个 Person里的所有方法，算是一个 aop 的 delegate 吧。
-     * */
+     */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         System.out.println("---正在执行的方法：" + method);
@@ -50,7 +50,7 @@ class MyInvokationHandler implements InvocationHandler {
         }
 
         method.invoke(person, args);
-        ((Person)proxy).sayHello("inside");
+        ((Person) proxy).sayHello("inside");
         return null;
     }
 }
