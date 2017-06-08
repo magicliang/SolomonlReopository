@@ -25,5 +25,20 @@ public class BootstrapTest {
         for (int i = 0; i < urls.length; i++) {
             System.out.println(urls[i].toExternalForm());
         }
+        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+        ClassLoader extClassLoader = systemClassLoader.getParent();
+        ClassLoader bootstrapClassLoader = extClassLoader.getParent();
+
+        System.out.println("systemClassLoader: " + systemClassLoader);
+        System.out.println("extClassLoader: " + extClassLoader);
+        // 这一行返回 null，也就是说 bootstrap classloader  本身不能由 getParent 得到。
+        System.out.println("bootstrapClassLoader: " + bootstrapClassLoader);
+
+        /**
+         * systemClassLoader: sun.misc.Launcher$AppClassLoader@18b4aac2
+         * extClassLoader: sun.misc.Launcher$ExtClassLoader@1d44bcfa
+         * bootstrapClassLoader: null
+         * */
+
     }
 }
