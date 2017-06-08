@@ -33,6 +33,7 @@ class MyInvokationHandler implements InvocationHandler {
 
     private Person person;
 
+    // 如果用构造函数，就是 composite，如果用 setter 就是 aggregate
     public MyInvokationHandler(Person p) {
         this.person = p;
     }
@@ -49,8 +50,10 @@ class MyInvokationHandler implements InvocationHandler {
             System.out.println("实参为" + args);
         }
 
+
+        // 注意， proxy 和 person 都是 person 接口的类型。 只不过 proxy是空虚类型的接口实例，而 person 是真的实例。这等于整个系统内有一个多余的对象才能实现方法的增强效果。
         method.invoke(person, args);
-        ((Person) proxy).sayHello("inside");
+        //((Person) proxy).sayHello("inside");
         return null;
     }
 }
