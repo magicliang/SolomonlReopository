@@ -1,8 +1,11 @@
+import com.sun.webkit.network.URLs;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Enumeration;
 
 /**
@@ -78,6 +81,14 @@ public class BootstrapTest {
         //这是寻找无参方法和调用无参方法的一个例子。
         Method hello = clazz.getMethod("hello");
         hello.invoke(null, null);
+
+        // test URLClassLoader, use current class path to find this class.
+        URL[] urLs = {new URL("file:.")};// Keep in mind the url must have a protocol format as prefix.
+        URLClassLoader urlClassLoader = new URLClassLoader(urls);
+        clazz = urlClassLoader.loadClass("BootstrapTest");
+
+        hello = clazz.getMethod("hello");
+        hello.invoke(null, null);
     }
 }
 
@@ -90,6 +101,7 @@ public class BootstrapTest {
  *   根据用户需求，让其他数据以字节码的形式加载到应用中
  *   我自己的理解：
  *      可以自己实现自己的 eval api 了！
+ *   所有的 ExtentionClassLoader 和 SystemClassLoader 都是 URLClassLoader 的子类。
  */
 class CompileClassLoader extends ClassLoader {
 
