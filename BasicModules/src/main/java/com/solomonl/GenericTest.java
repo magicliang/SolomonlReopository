@@ -9,6 +9,17 @@ import java.util.Map;
 
 /**
  * 获取泛型的具体类型，似乎只有反射成员才能做到？普通的局部变量看来是不行了？
+ * 类似的例子见：https://stackoverflow.com/questions/3403909/get-generic-type-of-class-at-runtime
+ * 换言之，能通过反射得到成员变量的 class 的（getClass() 而不是 .class意味着必须着实例上使用），就有可能获取泛型类型。
+ * private Class<T> persistentClass;
+ * public Constructor() {
+ * this.persistentClass = (Class<T>) ((ParameterizedType) getClass()
+ * .getGenericSuperclass()).getActualTypeArguments()[0];
+ * }
+ *
+ * 其他例子：
+ * http://josh-persistence.iteye.com/blog/2165613
+ * http://www.cnblogs.com/whitewolf/p/4355541.html (这篇文章好， type 是 class 的父接口)
  * Created by liangchuan on 2017/6/8.
  */
 public class GenericTest {
