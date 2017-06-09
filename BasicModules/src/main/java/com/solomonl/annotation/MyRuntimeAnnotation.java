@@ -20,7 +20,7 @@ public @interface MyRuntimeAnnotation {
     int age() default 1;
 
     // 一个相关的用法，可以把某些方法目标 method 标示出来，例如。这也是为什么我们能在很多框架中看到 xx.class 的配置文件的原因。
-    //Class<? extends ActionListener> listerner() default null;
+    Class<? extends ActionListener> listerner() default ActionListener.class;
 
     /**
      * 真正使用起来的代码大概是：
