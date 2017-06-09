@@ -19,7 +19,7 @@ import java.util.Map;
  *
  * 其他例子：
  * http://josh-persistence.iteye.com/blog/2165613
- * http://www.cnblogs.com/whitewolf/p/4355541.html (这篇文章好， type 是 class 的父接口)
+ * http://www.cnblogs.com/whitewolf/p/4355541.html (这篇文章好， type 是 class 的父接口， Class<String> 这里的 Class 是 Class， String 应该就是Type（或者说占据了 Type的位置）)。
  * Created by liangchuan on 2017/6/8.
  */
 public class GenericTest {
