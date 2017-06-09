@@ -71,5 +71,16 @@ public class ProxyTest {
                 handler); // 真正补完增强逻辑的地方都应该是我们自己做的，然后传进来就行类。
         p.walk();
         p.sayHello("chuan");
+
+        /**
+         *  用闭包的方式获取 engine，可以不用自己实现 invocationHandler 的接口，也不用自己 set 实际的 delegate 对象。
+         *     Proxy.newProxyInstance(null, new Class[] { descriptor.getListenerType() },
+         *     (proxy, method, args) ->
+         *     {
+         *     engine.eval(scriptCode);
+         *     return null;
+         *     }
+         *     ));
+         */
     }
 }
