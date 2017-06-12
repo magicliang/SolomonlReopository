@@ -43,6 +43,11 @@ public class ClassLoaderTest {
         System.out.println("extClassLoader: " + extClassLoader);
         // 这一行返回 null，也就是说 bootstrap classloader  本身不能由 getParent 得到。
         System.out.println("bootstrapClassLoader: " + bootstrapClassLoader);
+        // Java 的基本类型都是 java.lang 包里出来的，在 rt.jar 里被 bootstrap 被加载。
+        bootstrapClassLoader = String.class.getClassLoader();
+        // 这里更进一步证明了 bootstrap class loader 不能用平凡的 Java 对象获取。
+        System.out.println("bootstrapClassLoader: " + bootstrapClassLoader);
+
 
         /**
          * output:
