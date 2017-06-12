@@ -21,8 +21,7 @@ import java.util.Set;
  *         <proc>com.javacodegeeks.advanced.processor.MutatingAnnotationProcessor</proc>
  *     </annotationProcessors>
  *
- *  [magicliang@magicliang:/Users/m
- *  agicliang/IdeaProjects/SolomonlReopository/BasicModules/src/main/java]:javac com/solomonl/annotation/MyCustomAnnotationProcessor.java
+ *  [magicliang@magicliang:/Users/magicliang/IdeaProjects/SolomonlReopository/BasicModules/src/main/java]:javac com/solomonl/annotation/MyCustomAnnotationProcessor.java
  *  javac -XprintRounds -processor com.solomonl.annotation.MyCustomAnnotationProcessor com/solomonl/annotation/TestAnnotation.java
  *  循环 1:
  *  输入文件: {com.solomonl.annotation.TestAnnotation}
