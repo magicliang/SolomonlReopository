@@ -1,9 +1,6 @@
 package com.solomonl.annotation;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Messager;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -12,25 +9,34 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
+ * 用法：
+ *  [magicliang@magicliang:/Users/magicliang/IdeaProjects/SolomonlReopository/BasicModules/src/main/java]:javac com/solomonl/annotation/MyCustomAnnotationProcessor.java
+ *  [magicliang@magicliang:/Users/magicliang/IdeaProjects/SolomonlReopository/BasicModules/src/main/java]:javac -processor com.solomonl.annotation.MyCustomAnnotationProcessor com/solomonl/annotation/TestAnnotation.java
  * 这个类要求被处理的注解类至少有 source level 的注解水平。
  * Created by liangchuan on 2017/6/12.
  */
+@SupportedAnnotationTypes("com.solomonl.annotation.MyRuntimeAnnotation")
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
+//@AutoService(Processor.class)
 public class MyCustomAnnotationProcessor extends AbstractProcessor {
     //private Set<Class<? extends Annotation>> supportedAnnotationTypes = new HashSet<>();
-    private Set<String> supportedAnnotationTypes = new HashSet<String>();
+
+    /**
+     * 不要用这种覆盖的方法，应该使用注解为好。
+     */
+    //private Set<String> supportedAnnotationTypes = new HashSet<String>();
     /**
      * 注意区分 ProcessingEnvironment 和 RoundEnvironment。
      * @param env
      */
-    @Override
-    public synchronized void init(ProcessingEnvironment env) {
-        super.init(env);
-        //supportedAnnotationTypes.add(MyRuntimeAnnotation.class);
-
-        supportedAnnotationTypes.add(MyRuntimeAnnotation.class
-                .getCanonicalName());
-    }
+//    @Override
+//    public synchronized void init(ProcessingEnvironment env) {
+//        super.init(env);
+//        //supportedAnnotationTypes.add(MyRuntimeAnnotation.class);
+//
+//        supportedAnnotationTypes.add(MyRuntimeAnnotation.class
+//                .getCanonicalName());
+//    }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -59,13 +65,13 @@ public class MyCustomAnnotationProcessor extends AbstractProcessor {
         return false;
     }
 
-    @Override
-    public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.latestSupported();
-    }
-
-    @Override
-    public Set<String> getSupportedAnnotationTypes() {
-        return supportedAnnotationTypes;
-    }
+//    @Override
+//    public SourceVersion getSupportedSourceVersion() {
+//        return SourceVersion.latestSupported();
+//    }
+//
+//    @Override
+//    public Set<String> getSupportedAnnotationTypes() {
+//        return supportedAnnotationTypes;
+//    }
 }
