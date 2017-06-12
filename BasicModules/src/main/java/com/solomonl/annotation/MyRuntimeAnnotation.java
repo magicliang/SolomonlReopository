@@ -17,10 +17,10 @@ import java.lang.annotation.Target;
 public @interface MyRuntimeAnnotation {
 
     String name() default "lc";
-    int age() default 1;
+    int age() ;//default 1;
 
     // 一个相关的用法，可以把某些方法目标 method 标示出来，例如。这也是为什么我们能在很多框架中看到 xx.class 的配置文件的原因。
-    Class<? extends ActionListener> listerner() default ActionListener.class;//default value 不能为空！不管是什么注解都不能为空！
+    Class<? extends ActionListener> listerner() default ActionListener.class;//似乎 Object 类型的 annotation method 的 default value 不能为空！
 
     /**
      * 真正使用起来的代码大概是：

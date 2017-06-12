@@ -3,7 +3,7 @@ package com.solomonl.annotation;
 /**
  * Created by liangchuan on 2017/6/8.
  */
-@MyRuntimeAnnotation
+@MyRuntimeAnnotation(age = 1)
 public class TestAnnotation {
 
     public static void main(String[] args) {
