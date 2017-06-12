@@ -5,13 +5,25 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
+ *
+ * Annotation Processing tools 已经过时了，特别是在 Java 8 里。
  * 用法：
  *  [magicliang@magicliang:/Users/magicliang/IdeaProjects/SolomonlReopository/BasicModules/src/main/java]:javac com/solomonl/annotation/MyCustomAnnotationProcessor.java
- *  [magicliang@magicliang:/Users/magicliang/IdeaProjects/SolomonlReopository/BasicModules/src/main/java]:javac -processor com.solomonl.annotation.MyCustomAnnotationProcessor com/solomonl/annotation/TestAnnotation.java
+ *  javac -XprintRounds -processor com.solomonl.annotation.MyCustomAnnotationProcessor com/solomonl/annotation/TestAnnotation.java
+ *  循环 1:
+ *  输入文件: {com.solomonl.annotation.TestAnnotation}
+ *  注释: [com.solomonl.annotation.MyRuntimeAnnotation]
+ *  最后一个循环: false
+ *  注: ### content = com.solomonl.annotation.TestAnnotation
+ *  注: Name is: lc
+ *  循环 2:
+ *  输入文件: {}
+ *  注释: []
+ *  最后一个循环: true
+ *
  * 这个类要求被处理的注解类至少有 source level 的注解水平。
  * Created by liangchuan on 2017/6/12.
  */
