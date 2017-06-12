@@ -11,6 +11,7 @@ import java.util.Set;
  *
  * Annotation Processing tools 已经过时了，特别是在 Java 8 里。
  * 用法：
+ *  要在同一个类路径下才可以读到这个 processor，要不然就找不到么？
  *  [magicliang@magicliang:/Users/magicliang/IdeaProjects/SolomonlReopository/BasicModules/src/main/java]:javac com/solomonl/annotation/MyCustomAnnotationProcessor.java
  *  javac -XprintRounds -processor com.solomonl.annotation.MyCustomAnnotationProcessor com/solomonl/annotation/TestAnnotation.java
  *  循环 1:
@@ -25,6 +26,8 @@ import java.util.Set;
  *  最后一个循环: true
  *
  * 这个类要求被处理的注解类至少有 source level 的注解水平。
+ *
+ * 另一篇文章： http://www.baeldung.com/java-annotation-processing-builder
  * Created by liangchuan on 2017/6/12.
  */
 @SupportedAnnotationTypes("com.solomonl.annotation.MyRuntimeAnnotation")
