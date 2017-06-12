@@ -12,7 +12,17 @@ import java.util.Set;
  * Annotation Processing tools 已经过时了，特别是在 Java 8 里。
  * 用法：
  *  要在同一个类路径下才可以读到这个 processor，要不然就找不到么？
- *  [magicliang@magicliang:/Users/magicliang/IdeaProjects/SolomonlReopository/BasicModules/src/main/java]:javac com/solomonl/annotation/MyCustomAnnotationProcessor.java
+ *  一个使用 jar 类路径的用法：
+ *  avac -cp annotation-processing/target/annotation-processing-1.0.0-SNAPSHOT.jar -processor com.baeldung.annotation.processor.BuilderProcessor annotation-user/src/main/java/com/baeldung/annotation/Person.java
+ *  这样要求我们用谷歌的 service 插件？
+ * 或者使用 maven 插件？
+ *
+ *     <annotationProcessors>
+ *         <proc>com.javacodegeeks.advanced.processor.MutatingAnnotationProcessor</proc>
+ *     </annotationProcessors>
+ *
+ *  [magicliang@magicliang:/Users/m
+ *  agicliang/IdeaProjects/SolomonlReopository/BasicModules/src/main/java]:javac com/solomonl/annotation/MyCustomAnnotationProcessor.java
  *  javac -XprintRounds -processor com.solomonl.annotation.MyCustomAnnotationProcessor com/solomonl/annotation/TestAnnotation.java
  *  循环 1:
  *  输入文件: {com.solomonl.annotation.TestAnnotation}
@@ -28,6 +38,7 @@ import java.util.Set;
  * 这个类要求被处理的注解类至少有 source level 的注解水平。
  *
  * 另一篇文章： http://www.baeldung.com/java-annotation-processing-builder
+ * 与工厂模式有关的一篇文章： http://hannesdorfmann.com/annotation-processing/annotationprocessing101
  * Created by liangchuan on 2017/6/12.
  */
 @SupportedAnnotationTypes("com.solomonl.annotation.MyRuntimeAnnotation")
