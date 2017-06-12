@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 public @interface MyRuntimeAnnotation {
 
     String name() default "lc";
-    int age() ;//default 1;
+    int age() ;//default 1; 如果没有默认值，使用注解的时候必须加上默认值。也就是说注解的每一个方法都必须是有值的。
 
     // 一个相关的用法，可以把某些方法目标 method 标示出来，例如。这也是为什么我们能在很多框架中看到 xx.class 的配置文件的原因。
     Class<? extends ActionListener> listerner() default ActionListener.class;//似乎 Object 类型的 annotation method 的 default value 不能为空！
