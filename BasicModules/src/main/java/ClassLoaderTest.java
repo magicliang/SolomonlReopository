@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 
 /**
@@ -15,9 +18,10 @@ public class ClassLoaderTest {
         System.out.println("Hello, world");
     }
 
+    // 似乎只有在这个类有 .java 或者 .class 的场景下，用 java 跑才会成功。因为类路径本身就是以应用程序根路径为起点。也就是应用程序的包内为起点。而不是target 文件夹。
     public static void main(String[] args) throws Exception {
         /**
-         * 样例输出是：
+         * 样例输出是:
          * file:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/resources.jar
          * file:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/rt.jar
          * file:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/sunrsasign.jar
@@ -40,6 +44,12 @@ public class ClassLoaderTest {
         ClassLoader bootstrapClassLoader = extClassLoader.getParent();
 
         System.out.println("systemClassLoader: " + systemClassLoader);
+        /**
+         * 不要随便放 jar 进这个类路径里面。
+         * The extension class loader loads “standard extensions” from the jre/lib/ext directory.
+         * You can drop JAR files into that directory, and the extension class loader will find the classes in them,
+         * even without any class path. (Some people recommend this mechanism to avoid the “class path hell,” but see the next cautionary note.)
+         */
         System.out.println("extClassLoader: " + extClassLoader);
         // 这一行返回 null，也就是说 bootstrap classloader  本身不能由 getParent 得到。
         System.out.println("bootstrapClassLoader: " + bootstrapClassLoader);
@@ -77,8 +87,10 @@ public class ClassLoaderTest {
 
 
         // Try to use CompileClassLoader to load myself's hello method.
-
-        CompileClassLoader compileClassLoader = new CompileClassLoader();
+        // 只有用 parent 为null 才可以调用自己的类加载器！
+        CompileClassLoader compileClassLoader = new CompileClassLoader(null);
+        //CompileClassLoader compileClassLoader = new CompileClassLoader();
+        // 这是在用现成的父加载器加载这个类，注意，这个类因为 main 已经跑到这里了，必然在类加载器缓存里。
         Class<?> clazz = compileClassLoader.loadClass("ClassLoaderTest");
 
         //这是寻找无参方法和调用无参方法的一个例子。
@@ -98,15 +110,24 @@ public class ClassLoaderTest {
 
 /**
  * 可能可以实现的需求：
- *   执行代码前验证数字签名
- *   根据用户提供的密码解密代码，从而实现代码混淆器来反编译 class 文件。我的理解是，用户提供一个网络传输的加密过的字符串，实际上可以通过反混淆得到一个真正的 .class 文件，然后再加载。
- *   根据用户需求来动态加载类
- *   根据用户需求，让其他数据以字节码的形式加载到应用中
- *   我自己的理解：
- *      可以自己实现自己的 eval api 了！
- *   所有的 ExtentionClassLoader 和 SystemClassLoader 都是 URLClassLoader 的子类。
+ * 执行代码前验证数字签名
+ * 根据用户提供的密码解密代码，从而实现代码混淆器来反编译 class 文件。我的理解是，用户提供一个网络传输的加密过的字符串，实际上可以通过反混淆得到一个真正的 .class 文件，然后再加载。
+ * 根据用户需求来动态加载类
+ * 根据用户需求，让其他数据以字节码的形式加载到应用中
+ * 我自己的理解：
+ * 可以自己实现自己的 eval api 了！
+ * 所有的 ExtentionClassLoader 和 SystemClassLoader 都是 URLClassLoader 的子类。
  */
 class CompileClassLoader extends ClassLoader {
+
+
+    CompileClassLoader() {
+
+    }
+
+    CompileClassLoader(ClassLoader parent) {
+        super(parent);
+    }
 
     private byte[] getBytes(String fileName) throws IOException {
         // Prefer path to file in Java later in 7.
@@ -138,6 +159,21 @@ class CompileClassLoader extends ClassLoader {
 
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
+        System.out.println("Begin to find class via name: " + name);
+        Path path = Paths.get(".");
+        System.out.println(" path 的根路径是： " + path.getRoot());
+        Path absolutePath = path.toAbsolutePath();
+        System.out.println("absolutePath 的根路径：" + absolutePath.getRoot());
+        System.out.println("absolutePath 包含的路径数量：" + absolutePath.getNameCount());
+        // 注意，此时的运行时类路径，是这个项目的文件夹下的根路径，而不是 target 或者 build 或者 out 什么文件夹。
+        try {
+            System.out.println("List all files for path: " + path);
+            Files.list(path)
+                    .forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Class clazz = null;
         String fileStub = name.replace(".", "/");
         String javaFileName = fileStub + ".java";
@@ -166,6 +202,11 @@ class CompileClassLoader extends ClassLoader {
                 e.printStackTrace();
             }
         }
+
+        if (clazz == null) {
+            clazz = super.findClass(name);
+        }
+
         if (clazz == null) {
             throw new ClassNotFoundException(name);
         }
