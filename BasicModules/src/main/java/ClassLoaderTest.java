@@ -88,12 +88,14 @@ public class ClassLoaderTest {
 
         // Try to use CompileClassLoader to load myself's hello method.
         // 只有用 parent 为null 才可以调用自己的类加载器！
+        // 另一个思路， class bytes 本身就是被加密过的。然后父加载器加载失败。就可以调用这个类加载器了。
+        // 另一个思路，用来加载非 class 文件。这样父加载器也会加载失败。例如加载 java 文件。
         CompileClassLoader compileClassLoader = new CompileClassLoader(null);
         //CompileClassLoader compileClassLoader = new CompileClassLoader();
         // 这是在用现成的父加载器加载这个类，注意，这个类因为 main 已经跑到这里了，必然在类加载器缓存里。
         Class<?> clazz = compileClassLoader.loadClass("ClassLoaderTest");
 
-        //把自定义的 类加载器设定成当前的类加载器，代替默认的系统类加载器。
+        //把自定义的 类加载器设定成当前的类加载器，代替默认的系统类加载器。 这是在当前线程需要和其他类加载器中的Class 打交道，但又没有这些 Class 文件时的必然选择。
         Thread.currentThread().setContextClassLoader(compileClassLoader);
 
         //这是寻找无参方法和调用无参方法的一个例子。
