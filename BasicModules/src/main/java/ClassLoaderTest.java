@@ -93,6 +93,9 @@ public class ClassLoaderTest {
         // 这是在用现成的父加载器加载这个类，注意，这个类因为 main 已经跑到这里了，必然在类加载器缓存里。
         Class<?> clazz = compileClassLoader.loadClass("ClassLoaderTest");
 
+        //把自定义的 类加载器设定成当前的类加载器，代替默认的系统类加载器。
+        Thread.currentThread().setContextClassLoader(compileClassLoader);
+
         //这是寻找无参方法和调用无参方法的一个例子。
         Method hello = clazz.getMethod("hello");
         hello.invoke(null, null);
