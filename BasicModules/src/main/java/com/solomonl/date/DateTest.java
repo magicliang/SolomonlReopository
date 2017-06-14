@@ -1,9 +1,6 @@
 package com.solomonl.date;
 
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.Date;
 
 /**
@@ -30,5 +27,10 @@ public class DateTest {
         System.out.println(clock.millis());
         System.out.println(dateFromClock);
         System.out.println(timeFromClock);
+
+        // 一个简化的 date，不如 date 丰富。
+        LocalDateTime  localDateTime = LocalDateTime.now();
+        System.out.println(localDateTime);
+
     }
 }
