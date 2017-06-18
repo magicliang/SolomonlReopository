@@ -7,6 +7,10 @@ public class Collections {
 /**TODO: 1 let comparable to be compared instead of integer
  *       2 let comparable to be generic
  */
+    /**
+     *
+     * @param c
+     */
     public static void QuickSortSort(Collection c){
 
     }

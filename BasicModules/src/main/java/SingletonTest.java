@@ -1,8 +1,13 @@
+import java.util.ArrayList;
+
 /**
  * Created by magicliang on 2016/8/2.
  */
 //use enum to represent singleton
 public class SingletonTest {
+
+    private ArrayList<String> arrayList;
+
     public static void main(String[] args){
         //These 2 instances are the same instances
         System.out.println(getSingletonByStaticHolder());

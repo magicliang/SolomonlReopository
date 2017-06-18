@@ -67,6 +67,7 @@ public class ProxyTest {
         InvocationHandler handler = new MyInvokationHandler(man);
 
         Person p = (Person) Proxy.newProxyInstance(Person.class.getClassLoader(), // 当前的类加载器
+                // 注意，这最后一个参数必须是接口，否则报错：Exception in thread "main" java.lang.IllegalArgumentException: com.solomonl.Man is not an interface
                 new Class[] {Person.class}, //或者 man.getClass().getInterfaces(); 需要代理的接口
                 handler); // 真正补完增强逻辑的地方都应该是我们自己做的，然后传进来就行类。
         p.walk();

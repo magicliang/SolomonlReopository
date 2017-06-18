@@ -26,7 +26,7 @@ public class LinkedList<T> implements List {
         head.setNextNode(head);
         head.setPreviousNode(head);
     }
-     
+
     public Node<T> getHead() {
         return head;
     }
