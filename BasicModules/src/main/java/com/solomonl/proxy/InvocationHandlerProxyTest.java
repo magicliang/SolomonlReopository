@@ -61,7 +61,7 @@ class MyInvokationHandler implements InvocationHandler {
 }
 
 
-public class ProxyTest {
+public class InvocationHandlerProxyTest {
 
     public static void main(String[] args) {
         Person man = new Man();
