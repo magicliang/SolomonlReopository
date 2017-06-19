@@ -1,4 +1,4 @@
-package com.solomonl.proxy;
+package com.solomonl.proxy.invocation_handler;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -69,14 +69,14 @@ public class InvocationHandlerProxyTest {
         InvocationHandler handler = new MyInvokationHandler(man);
 
         Person p = (Person) Proxy.newProxyInstance(Person.class.getClassLoader(), // 当前的类加载器
-                // 注意，这最后一个参数必须是接口，否则将报错：Exception in thread "main" java.lang.IllegalArgumentException: com.solomonl.proxy.Man is not an interface
+                // 注意，这最后一个参数必须是接口，否则将报错：Exception in thread "main" java.lang.IllegalArgumentException: com.solomonl.proxy.invocation_handler.Man is not an interface
                 new Class[]{Person.class}, //或者 man.getClass().getInterfaces(); 需要代理的接口
                 handler); // 真正补完增强逻辑的地方都应该是我们自己做的，然后传进来就行类。
         p.walk();
         p.sayHello("chuan");
 
         /**
-         *  用闭包的方式获取 engine，可以不用自己实现 invocationHandler 的接口，也不用自己 set 实际的 delegate 对象。
+         *  用闭包的方式获取 engine，可以不用自己实现 invocationHandler 的接口，也不用自己 set 实际的 delegate 对象。这种做法最好。
          *     Proxy.newProxyInstance(null, new Class[] { descriptor.getListenerType() },
          *     (proxy, method, args) ->
          *     {

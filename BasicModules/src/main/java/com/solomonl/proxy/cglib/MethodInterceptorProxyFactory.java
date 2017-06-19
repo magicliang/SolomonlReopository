@@ -1,4 +1,4 @@
-package com.solomonl.proxy;
+package com.solomonl.proxy.cglib;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -9,18 +9,21 @@ import java.lang.reflect.Method;
 /**
  * Created by LC on 2017/6/18.
  */
-public class CglibProxyFactory implements MethodInterceptor {
-    private Object target;
+public class MethodInterceptorProxyFactory<T> implements MethodInterceptor, ProxyInterface<T> {
 
-    public Object getInstance(Object target) {
-        this.target = target;
+    @Override
+    public T getInstance(T instance) {
+
         Enhancer enhancer = new Enhancer();
         // 用 Enhancer 来当一个 dynamic proxy。
-        enhancer.setSuperclass(this.target.getClass());
+        enhancer.setSuperclass(instance.getClass());
+        // set callback 方法本身就是为了把 proxy 套在原 instance 外面。enhancer 的具体增强逻辑，应该都是 Callback 的子类型。
         enhancer.setCallback(this);
-        return enhancer.create();
+        // T 可以当做类型来用，通配符就不行
+        return (T) enhancer.create();
     }
 
+    // 泛型方法不能更改这个方法的签名，协变逆变都没什么卵用。
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
         // 怎样只增强指定的方法？靠反射获取方法名的形式？是不是一定有返回值的必要呢？
