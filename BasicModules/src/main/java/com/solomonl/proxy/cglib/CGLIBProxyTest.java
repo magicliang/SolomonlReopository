@@ -16,5 +16,9 @@ public class CGLIBProxyTest {
         System.out.println("Echo agc: " + newProxy.echo("agc"));
         System.out.println("Echo 123: " + newProxy.echo("123"));
 
+        InvocationHandlerProxyFactory invocationHandlerProxyFactory = new InvocationHandlerProxyFactory();
+        newProxy = (ConcreteImpl) invocationHandlerProxyFactory.getInstance(new ConcreteImpl());
+        System.out.println("Echo agc: " + newProxy.echo("agc"));
+
     }
 }
