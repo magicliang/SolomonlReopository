@@ -6,22 +6,39 @@ package com.solomonl.proxy.cglib;
 public class CGLIBProxyTest {
     public static void main(String[] args) {
 
-        MethodInterceptorProxyFactory methodInterceptorProxyFactory = new MethodInterceptorProxyFactory();
-        ConcreteImpl newProxy = (ConcreteImpl) methodInterceptorProxyFactory.getInstance(new ConcreteImpl());
+        MethodInterceptorProxyFactory<ConcreteImpl> methodInterceptorProxyFactory = new MethodInterceptorProxyFactory<>();
+        ConcreteImpl newProxy = methodInterceptorProxyFactory.getInstance(new ConcreteImpl());
         System.out.println(newProxy.enhancedOperation());
         System.out.println(newProxy.normalOperation());
 
-        FixValuedProxyFactory fixValuedProxyFactory = new FixValuedProxyFactory();
-        newProxy = (ConcreteImpl) fixValuedProxyFactory.getInstance(new ConcreteImpl());
+        FixValuedProxyFactory<ConcreteImpl> fixValuedProxyFactory = new FixValuedProxyFactory<>();
+        newProxy = fixValuedProxyFactory.getInstance(new ConcreteImpl());
         System.out.println("Echo agc: " + newProxy.echo("agc"));
         System.out.println("Echo 123: " + newProxy.echo("123"));
 
-        InvocationHandlerProxyFactory invocationHandlerProxyFactory = new InvocationHandlerProxyFactory();
-        newProxy = (ConcreteImpl) invocationHandlerProxyFactory.getInstance(new ConcreteImpl());
+        InvocationHandlerProxyFactory<ConcreteImpl> invocationHandlerProxyFactory = new InvocationHandlerProxyFactory<>();
+        newProxy = invocationHandlerProxyFactory.getInstance(new ConcreteImpl());
         System.out.println("Echo agc: " + newProxy.echo("agc"));
 
-        CallBackFilterFactory callBackFilterFactory = new CallBackFilterFactory();
-        newProxy = (ConcreteImpl) callBackFilterFactory.getInstance(new ConcreteImpl());
+        CallBackFilterFactory<ConcreteImpl> callBackFilterFactory = new CallBackFilterFactory<>();
+        newProxy = callBackFilterFactory.getInstance(new ConcreteImpl());
         System.out.println("Echo agc: " + newProxy.echo("agc"));
+
+        ImmutableBeanFactory<SampleBean> immutableBeanFactory1 = new ImmutableBeanFactory<>();
+        SampleBean immutableBean1 = immutableBeanFactory1.getInstance(new SampleBean());
+        try {
+            immutableBean1.setValue("agc");
+        } catch (IllegalStateException ex) {
+            System.out.println(ex);
+        }
+
+        ImmutableBeanFactory<ConcreteImpl> immutableBeanFactory2 = new ImmutableBeanFactory<>();
+        ConcreteImpl concrete = new ConcreteImpl();
+        ConcreteImpl immutableBean2 = immutableBeanFactory2.getInstance(concrete);
+        try {
+            immutableBean2.setValue("agc");
+        } catch (IllegalStateException ex) {
+            System.out.println(ex);
+        }
     }
 }
