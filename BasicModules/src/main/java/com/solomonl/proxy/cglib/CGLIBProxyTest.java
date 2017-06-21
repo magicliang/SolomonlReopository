@@ -1,5 +1,8 @@
 package com.solomonl.proxy.cglib;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /**
  * Created by LC on 2017/6/18.
  */
@@ -34,11 +37,37 @@ public class CGLIBProxyTest {
 
         ImmutableBeanFactory<ConcreteImpl> immutableBeanFactory2 = new ImmutableBeanFactory<>();
         ConcreteImpl concrete = new ConcreteImpl();
-        ConcreteImpl immutableBean2 = immutableBeanFactory2.getInstance(concrete);
+        /**
+         * 注意，这一句和
+         *         ConcreteImpl newProxy = methodInterceptorProxyFactory.getInstance(new ConcreteImpl());
+         *         System.out.println(newProxy.enhancedOperation());
+         *         这两句矛盾。只要执行了这个enhancedOperation，这个类型的任何实例都不能生成 ImmutableBean 了。奇怪得很。不知道是不是bug？
+         *         简而言之， MethodInterceptor 和
+         * */
+//        ConcreteImpl immutableBean2 = immutableBeanFactory2.getInstance(concrete);
+//        try {
+//            immutableBean2.setValue("agc");
+//        } catch (IllegalStateException ex) {
+//            System.out.println(ex);
+//        }
+
+        BeanGeneratorFactory<SampleBean> beanGeneratorFactory = new BeanGeneratorFactory<>();
+        SampleBean sampleBean = beanGeneratorFactory.getInstance(new SampleBean());
+        Method setter = null;
         try {
-            immutableBean2.setValue("agc");
-        } catch (IllegalStateException ex) {
-            System.out.println(ex);
+            setter = sampleBean.getClass().getMethod("setHelloWord", String.class);
+            setter.invoke(sampleBean, "Hello cglib");
+
+            Method getter = sampleBean.getClass().getMethod("getHelloWord");
+            System.out.println("beanGeneratorFactory: " + getter.invoke(sampleBean));
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
+
+
     }
 }
