@@ -1,13 +1,19 @@
 package com.solomonl.proxy.cglib;
 
+import net.sf.cglib.beans.BeanCopier;
+import net.sf.cglib.beans.BeanMap;
+import net.sf.cglib.beans.BulkBean;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
+ * 基本按照这里的例子可以实现自己的 AOP 了。特别是可以用正则表达式来写 if-else。
  * Created by LC on 2017/6/18.
  */
 public class CGLIBProxyTest {
     public static void main(String[] args) {
+
 
         MethodInterceptorProxyFactory<ConcreteImpl> methodInterceptorProxyFactory = new MethodInterceptorProxyFactory<>();
         ConcreteImpl newProxy = methodInterceptorProxyFactory.getInstance(new ConcreteImpl());
@@ -68,6 +74,41 @@ public class CGLIBProxyTest {
             e.printStackTrace();
         }
 
+        BeanCopier copier = BeanCopierFactory.getBeanCopier(SampleBean.class, OtherSampleBean.class);
+        SampleBean sampleBean1 = new SampleBean();
+        sampleBean1.setValue("娃哈哈啊娃哈哈");
 
+        OtherSampleBean otherSampleBean = new OtherSampleBean();
+        copier.copy(sampleBean1, otherSampleBean, null);
+
+        System.out.println(otherSampleBean.getValue());
+
+        /**
+         *      相比于BeanCopier，BulkBean将整个Copy的动作拆分为getPropertyValues，setPropertyValues的两个方法，允许自定义处理的属性。
+         * */
+
+        BulkBean bulkBean = BulkBean.create(SampleBean.class,
+                new String[]{"getValue"},
+                new String[]{"setValue"},
+                new Class[]{String.class});
+
+        SampleBean bean = new SampleBean();
+        bean.setValue("sample bean");
+
+        System.out.println("How many properties this bean has: " + bulkBean.getPropertyValues(bean).length);
+
+        System.out.println("First property is: " + bulkBean.getPropertyValues(bean)[0]);
+
+        bulkBean.setPropertyValues(bean, new Object[]{"bulk bean"});
+
+        System.out.println("Bean value now is: " + bean.getValue());
+
+
+        SampleBean bean2 = new SampleBean();
+
+        BeanMap map = BeanMap.create(bean2);
+        bean2.setValue("5456576");
+
+        System.out.println("Bean map now is synchronized: " + map.get("value"));
     }
 }
