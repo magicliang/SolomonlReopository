@@ -7,6 +7,8 @@ import net.sf.cglib.proxy.MethodProxy;
 import java.lang.reflect.Method;
 
 /**
+ *
+ * 这个类比 InvocationHandler 和 FixedValue 更加完善。而且不容易触发无限递归问题。
  * Created by LC on 2017/6/18.
  */
 public class MethodInterceptorProxyFactory<T> implements MethodInterceptor, ProxyInterface<T> {

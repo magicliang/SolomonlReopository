@@ -15,6 +15,7 @@ public class InvocationHandlerProxyFactory<T> implements ProxyInterface<T> {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(instance.getClass());
         enhancer.setCallback((InvocationHandler) (Object o, Method method, Object[] objects) -> {
+            // Java 的这两个方法真的是鸭子类型编程方式的克星。但从侧面上看，也可以用来实现鸭子类型了。
             if (method.getDeclaringClass() != Object.class && method.getReturnType() == String.class) {
                 // 不能这样调用，否则会有无限递归。和 Java 自带的 invocationHandler不能直接对 proxy 下手差不多。要做super调用要用MethodInterceptor
                 //return "InvocationHandlerProxyFactory enhenced." + method.invoke(o, objects);
