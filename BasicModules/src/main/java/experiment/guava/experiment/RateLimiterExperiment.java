@@ -63,7 +63,12 @@ public class RateLimiterExperiment {
             System.out.println(limiter.acquire());
         }
 
-        System.out.println("");
+        System.out.println("before SmoothWarmUp aquire 10 at once!");
+
+        System.out.println(limiter.acquire(10));//此处还可以按照之前已经做过 throttle 的速度即0.2秒的速度继续拿数据。
+
+        System.out.println(limiter.acquire()); // 但后面的令牌就要支付10倍时间的积欠了。
+
 
     }
 }

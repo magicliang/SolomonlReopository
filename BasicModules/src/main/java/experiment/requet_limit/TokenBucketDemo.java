@@ -16,8 +16,7 @@ public class TokenBucketDemo {
         if (tokens < 1) {
             // 若不到1个令牌,则拒绝
             return false;
-        }
-        else {
+        } else {
             // 还有令牌，领取令牌
             tokens -= 1;
             return true;
