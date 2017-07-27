@@ -49,8 +49,8 @@ public class Encryptor {
         String key = "jjccblwsswyrzsyf"; // 128 bit key
         String initVector = "ggjjzhzzytsnjzhq"; // 16 bytes IV
 
-        System.out.println(decrypt(key, initVector,
-                encrypt(key, initVector, "一万年太短")));
+        System.out.println("解码值是： " + decrypt(key, initVector,
+                encrypt(key, initVector, "test-service-a")));
     }
 }
 
