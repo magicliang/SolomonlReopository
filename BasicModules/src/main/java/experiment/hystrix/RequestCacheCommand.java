@@ -55,5 +55,8 @@ public class RequestCacheCommand extends HystrixCommand<String> {
         }
     }
 }
-
+/**
+ *  NOTE:请求缓存可以让(CommandKey/CommandGroup)相同的情况下,直接共享结果，降低依赖调用次数，在高并发和CacheKey碰撞率高场景下可以提升性能.
+ *  注意，这和 request collapsing 并不一样。
+ * */
 

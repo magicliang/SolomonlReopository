@@ -27,7 +27,7 @@ public class SecondCommand extends HystrixCommand<String> {
     @Override
     protected String getFallback() {
         // 隔离依赖依赖本身并没有影响 exception 的线程池和线程名称
-        return "current thread is: " + Thread.currentThread().getName() + ", exeucute Falled";
+        return "current thread is: " + Thread.currentThread().getName() + ", execute Failed";
     }
 
     @Override

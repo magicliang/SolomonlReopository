@@ -53,6 +53,8 @@ public class FirstCommand extends HystrixCommand<String> {
         // 从程序的输出我们可以看到 subscriber/observer 都是被本 command 的线程顺序执行。因为这是第三个 command，所以执行线程就是线程3.
         // Action1 只含有一个响应方法的订阅者。这里一 subscribe 了就立即获得了返回值了
         fs.subscribe((s) -> System.out.println("Action1 subscriber: " + s));
+
+        // 如果需要使用响应多种 case 而不只是成功 case 的接口，考虑使用 observer。或者考虑使用 HystrixObservableCommand 用构造器来注册观察者。
         // 此处也是立即获得了返回值。
         fs.subscribe(new Observer<String>() {
 

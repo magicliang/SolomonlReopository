@@ -51,6 +51,13 @@ public class Encryptor {
 
         System.out.println("解码值是： " + decrypt(key, initVector,
                 encrypt(key, initVector, "test-service-a")));
+
+        long begin = System.nanoTime();
+        encrypt(key, initVector, "123");
+        long end = System.nanoTime();
+        long elapsed = end - begin;
+        System.out.println("Time for encrypting is:" + elapsed);
+
     }
 }
 
