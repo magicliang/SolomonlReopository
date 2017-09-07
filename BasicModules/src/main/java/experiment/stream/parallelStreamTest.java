@@ -27,8 +27,5 @@ public class parallelStreamTest {
         int s = wordStream.reduce(0, (x, y) -> x + y.length(), (x, y) -> x + y);
         System.out.println(s);
 
-
-
-
     }
 }
