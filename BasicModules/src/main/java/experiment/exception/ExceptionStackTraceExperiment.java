@@ -5,11 +5,11 @@ package experiment.exception;
  */
 public class ExceptionStackTraceExperiment {
 
-    private static void foo() throws Exception {
-        throw new Exception();
+    private static void foo() {
+        throw new RuntimeException();
     }
 
-    private static void bar() throws Exception {
+    private static void bar()  {
         try {
             foo();
         } catch (Exception e) {
