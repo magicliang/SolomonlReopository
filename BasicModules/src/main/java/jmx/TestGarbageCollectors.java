@@ -15,7 +15,9 @@ public class TestGarbageCollectors {
         for (GarbageCollectorMXBean b : l) {
             System.out.println(b.getName());
         }
-
+        // 输出结果：
+        // PS Scavenge
+        // PS MarkSweep
         Thread.sleep(100000l);
     }
 }
