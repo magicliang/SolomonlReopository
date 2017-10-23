@@ -14,12 +14,11 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 
 /**
  * @author liangchuan
+ * @BenchmarkMode @OutputTimeUnit 两个注解可以下推到 @benchmark 上。
  */
-
 @BenchmarkMode(Mode.All)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 @State(Scope.Thread)

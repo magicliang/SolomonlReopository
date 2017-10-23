@@ -30,6 +30,12 @@ import java.util.concurrent.TimeUnit;
 // 线程间共享。这个注解应该放在一个成员变量上为好。这样可以保证那个成员变量会被注入到一个 benchmark 方法里头。
 // Thread  意味着每个线程有一个单独的 copy，而 benchmark 则意味着整个测试的所有线程拥有它的 copy
 // 此处之所以放在类上，是为了让测试方法不是 static 的。对作为成员方法 benchmark 的方法而言。这个对象的实例，也是一个隐含着需要的 this 参数。
+
+/**
+ * Thread	Each thread running the benchmark will create its own instance of the state object.
+ * Group	Each thread group running the benchmark will create its own instance of the state object.
+ * Benchmark	All threads running the benchmark share the same state object.
+ */
 @State(Scope.Thread)
 public class FirstBenchmark {
 
