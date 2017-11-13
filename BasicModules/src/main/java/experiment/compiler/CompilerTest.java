@@ -13,7 +13,8 @@ public class CompilerTest {
 
     public static void main(String[] args) {
 
-        // Traverse Java compiler
+        // Traverse Java compiler Java编译器映射到内存中的一个对象
+        // Javac 本身也是 Java写的（而缺省的bootstrap 类加载器却是用C++写的）
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 
         final List<ByteArrayJavaClass> classFileObjects = new ArrayList<>();
