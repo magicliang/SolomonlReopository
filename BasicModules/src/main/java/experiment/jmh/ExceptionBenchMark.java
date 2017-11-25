@@ -1,13 +1,6 @@
 package experiment.jmh;
 
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Param;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
@@ -47,11 +40,8 @@ public class ExceptionBenchMark {
     // 一定要是公开方法
     @Benchmark
     public void benchMarkReturn() {
-        try {
-            throwMethod(recursiveDepth);
-        } catch (Exception e) {
-
-        }
+        // 一定要加上使用结果的代码，否则这个代价可能被 JIT消除掉。
+        System.out.println(returnMethod(recursiveDepth));
     }
 
     @Benchmark
@@ -59,7 +49,8 @@ public class ExceptionBenchMark {
         try {
             throwMethod(recursiveDepth);
         } catch (Exception e) {
-
+            // 一定要加上使用结果的代码，否则这个代价可能被 JIT消除掉。
+            System.out.println(e);
         }
     }
 
