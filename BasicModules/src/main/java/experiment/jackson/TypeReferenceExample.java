@@ -3,6 +3,7 @@ package experiment.jackson;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,36 +16,11 @@ public class TypeReferenceExample {
     private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static <T> Entity<T> deserialize(String message) throws IOException {
-        Object o = OBJECT_MAPPER.readValue(message, new TypeReference<T>() {
-        });
-        /**
-         * o is: {data=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]1}
-         */
-        System.out.println("o is: " + o);
-        /**
-         * o's type is: class java.util.LinkedHashMap
-         */
-        System.out.println("o's type is: " + o.getClass());
 
         /**
-         * o's generic type is: java.util.HashMap<K, V>
+         * 少了这个壳类型就不行。这个壳如果不存在，则 jackson会选用 LinkHashMap作壳
          */
-        System.out.println("o's generic type is: " + o.getClass().getGenericSuperclass());
-
-        /**
-         * 到这一层已经说明都运行时读不出来
-         * o's generic type's generic type is: class java.lang.Object
-         */
-        System.out.println("o's generic type's generic type is: " + o.getClass().getGenericSuperclass().getClass().getGenericSuperclass());
-
-
-        /**
-         * 在这一步就会报错，换言之，TypeReference 确实只能推导到 Collection/Map一类类型里面：
-         *  Exception in thread "main" java.lang.ClassCastException: java.util.LinkedHashMap cannot be cast to experiment.jackson.Entity
-         at experiment.jackson.TypeReferenceExample.deserialize(TypeReferenceExample.java:17)
-         at experiment.jackson.TypeReferenceExample.main(TypeReferenceExample.java:39)
-         */
-        Entity<T> entity = OBJECT_MAPPER.readValue(message, new TypeReference<T>() {
+        Entity<T> entity = OBJECT_MAPPER.readValue(message, new TypeReference<Entity<T>>() {
         });
         return entity;
     }
@@ -73,7 +49,14 @@ public class TypeReferenceExample {
         // 使用成员方法来使用类型见证帮助推导也于事无补。
         Entity<List<String>> entity2 = TypeReferenceExample.deserialize(msg);
 
-        System.out.println(entity2);
+        System.out.println("entity2 is:" + entity2);
+
     }
+}
+
+@Data
+class A {
+    private String a;
+
 }
 
