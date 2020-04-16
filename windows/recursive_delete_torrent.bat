@@ -1,1 +1,0 @@
-del %cd%\*.torrent /f /s /q /a
